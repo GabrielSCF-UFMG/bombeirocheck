@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#c0392b">
+<title>🚒 BombeiroCheck</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#1a1a1a;color:#eee;min-height:100vh;padding-bottom:80px}
+header{background:linear-gradient(135deg,#c0392b,#e74c3c);padding:14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+header h1{font-size:20px;color:#fff;display:flex;align-items:center;gap:8px}
+.container{padding:14px;max-width:800px;margin:0 auto}
+.card{background:#2a2a2a;border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid #3a3a3a}
+.card h2{font-size:16px;color:#e74c3c;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+input,select,textarea,button{font-family:inherit;font-size:15px;width:100%;padding:12px;border-radius:8px;border:1px solid #444;background:#1a1a1a;color:#eee;margin-bottom:10px}
+textarea{min-height:60px;resize:vertical}
+button{background:#c0392b;color:#fff;border:none;font-weight:600;cursor:pointer;transition:.2s}
+button:hover{background:#e74c3c}
+button.sec{background:#34495e}
+button.sec:hover{background:#465a70}
+button.ok{background:#27ae60}
+button.warn{background:#f39c12}
+.row{display:flex;gap:8px}
+.row button{flex:1}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tabs button{flex:1;padding:10px;font-size:13px;background:#333}
+.tabs button.active{background:#c0392b}
+.hidden{display:none}
+.status-bar{display:flex;gap:8px;flex-wrap:wrap;padding:10px;background:#1a1a1a;border-radius:8px;margin-bottom:12px;font-size:13px}
+.stat{padding:4px 10px;background:#333;border-radius:20px}
+.compart-title{background:#34495e;color:#fff;padding:10px;border-radius:8px;margin:12px 0 6px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.badge{background:#c0392b;padding:2px 8px;border-radius:10px;font-size:12px}
+.item{background:#1f1f1f;border-left:4px solid #555;padding:12px;margin-bottom:8px;border-radius:8px}
+.item.ok{border-left-color:#27ae60}
+.item.fal{border-left-color:#e74c3c;background:#2a1f1f}
+.item.ava{border-left-color:#f39c12;background:#2a261f}
+.item h4{font-size:14px;margin-bottom:4px}
+.item small{display:block;color:#999;font-size:11px;margin:2px 0}
+.item .row{margin-top:8px}
+.item .row button{padding:8px;font-size:12px}
+.photo-thumb{width:60px;height:60px;object-fit:cover;border-radius:6px;margin:4px 4px 0 0;border:2px solid #444}
+canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:none}
+.fab-voz{position:fixed;bottom:20px;right:20px;width:60px;height:60px;border-radius:50%;background:#27ae60;font-size:24px;box-shadow:0 4px 20px rgba(0,0,0,.5);z-index:200;padding:0}
+.fab-voz.rec{background:#e74c3c;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.search-box{position:sticky;top:60px;background:#1a1a1a;padding:8px 0;z-index:50}
+optgroup{font-weight:700;color:#e74c3c}
+.online-badge{font-size:11px;padding:3px 8px;border-radius:10px;background:#27ae60;margin-left:auto}
+.online-badge.off{background:#7f8c8d}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🚒 BombeiroCheck <span id="onlineBadge" class="online-badge">●</span></h1>
+</header>
+
+<div class="container">
+
+  <!-- TELA HOME -->
+  <div id="tela-home">
+    <div class="card">
+      <h2>👤 Identificação</h2>
+      <input id="meuNome" placeholder="Seu nome de guerra">
+      <input id="minhaMat" placeholder="Matrícula">
+      <button onclick="salvarMilitar()">💾 Salvar</button>
+    </div>
+
+    <div class="card">
+      <h2>📋 Mapa de Carga</h2>
+      <button class="sec" onclick="importarMapa()">📥 Importar mapa-carga.json</button>
+      <input type="file" id="fileMapa" accept=".json" style="display:none">
+      <small style="color:#888">Use o conversor.html para gerar o JSON do Excel</small>
+    </div>
+
+    <div class="card">
+      <h2>🚒 Iniciar Conferência</h2>
+      <select id="selUnidade"><option value="">-- Selecione --</option></select>
+      
+      <label style="font-size:13px;color:#aaa">Seu papel:</label>
+      <div class="tabs">
+        <button class="active" onclick="setPapel(this,'entrante')">🟢 Entrante</button>
+        <button onclick="setPapel(this,'sainte')">🔴 Sainte</button>
+      </div>
+      
+      <label style="font-size:13px;color:#aaa">Modo:</label>
+      <div class="tabs">
+        <button class="active" onclick="setModo(this,'completo')">📝 Completo</button>
+        <button onclick="setModo(this,'rapido')">⚡ Rápido</button>
+      </div>
+      
+      <button onclick="iniciarConferencia()">▶️ Começar</button>
+    </div>
+
+    <div class="card">
+      <h2>📚 Histórico</h2>
+      <button class="sec" onclick="abrirHistorico()">📜 Ver passagens anteriores</button>
+    </div>
+  </div>
+
+  <!-- TELA CONFERÊNCIA -->
+  <div id="tela-conf" class="hidden">
+    <div class="card">
+      <button class="sec" onclick="voltarHome()" style="margin-bottom:10px">← Voltar</button>
+      <h2 id="tituloConf">Conferência</h2>
+      <div class="status-bar" id="statusBar"></div>
+      <div class="search-box">
+        <input id="busca" placeholder="🔍 Buscar item..." oninput="renderItens()">
+      </div>
+      <div id="listaItens"></div>
+      <button onclick="finalizarConferencia()" style="margin-top:14px">✅ Finalizar e Assinar</button>
+    </div>
+  </div>
+
+  <!-- TELA ASSINATURA -->
+  <div id="tela-sign" class="hidden">
+    <div class="card">
+      <h2>✍️ Assinaturas</h2>
+      
+      <textarea id="obsGeral" placeholder="Observações gerais da passagem..."></textarea>
+      
+      <h3 style="margin:12px 0 6px;color:#e74c3c;font-size:14px">🔴 Sainte (quem entrega)</h3>
+      <input id="nomeSainte" placeholder="Nome do sainte">
+      <canvas id="sigSainte"></canvas>
+      <button class="sec" onclick="limparSig('sigSainte')">🧹 Limpar</button>
+      
+      <h3 style="margin:12px 0 6px;color:#27ae60;font-size:14px">🟢 Entrante (quem recebe)</h3>
+      <input id="nomeEntrante" placeholder="Nome do entrante">
+      <canvas id="sigEntrante"></canvas>
+      <button class="sec" onclick="limparSig('sigEntrante')">🧹 Limpar</button>
+      
+      <button onclick="gerarRelatorio()" style="margin-top:14px">📄 Gerar PDF & Salvar</button>
+      <button class="sec" onclick="document.getElementById('tela-sign').classList.add('hidden');document.getElementById('tela-conf').classList.remove('hidden')">← Voltar</button>
+    </div>
+  </div>
+
+</div>
+
+<button class="fab-voz" id="btnVoz" onclick="toggleVoz()" title="Comando de voz">🎤</button>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('✅ App instalável'))
+      .catch(e => console.warn('SW falhou:', e));
+  });
+}
+</script>
+
+<!-- Bibliotecas -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, orderBy, limit } 
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInAnonymously } 
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDoDGsqhE8gB4mQkBmTWD37bjOOPF1C-oE",
+  authDomain: "bombeirocheck.firebaseapp.com",
+  projectId: "bombeirocheck",
+  storageBucket: "bombeirocheck.firebasestorage.app",
+  messagingSenderId: "804141837667",
+  appId: "1:804141837667:web:fa74a5c60f1c8615b73756"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Login anônimo automático
+signInAnonymously(auth)
+  .then(()=> {
+    document.getElementById('onlineBadge').textContent = '● online';
+    document.getElementById('onlineBadge').classList.remove('off');
+  })
+  .catch(e => {
+    console.warn('Auth falhou (modo offline):', e.message);
+    document.getElementById('onlineBadge').textContent = '● offline';
+    document.getElementById('onlineBadge').classList.add('off');
+  });
+
+window.fb = { db, collection, doc, setDoc, getDoc, getDocs, query, orderBy, limit };
+</script>
+
+<script>
+/* ==================== ESTADO ==================== */
+const S = {
+  militar: JSON.parse(localStorage.getItem('militar')||'null'),
+  mapa: JSON.parse(localStorage.getItem('mapa')||'null'),
+  unidadeAtual: null,
+  papel: 'entrante',
+  modo: 'completo',
+  conferencia: {},
+  recognition: null,
+  ouvindo: false
+};
+
+/* ==================== INIT ==================== */
+window.addEventListener('load', () => {
+  if (S.militar) {
+    document.getElementById('meuNome').value = S.militar.nome;
+    document.getElementById('minhaMat').value = S.militar.mat;
+  }
+  setTimeout(carregarUnidades, 1500); // espera auth
+  initVoz();
+});
+
+/* ==================== MILITAR ==================== */
+function salvarMilitar(){
+  const nome = document.getElementById('meuNome').value.trim();
+  const mat = document.getElementById('minhaMat').value.trim();
+  if(!nome || !mat) return alert('Preencha nome e matrícula');
+  S.militar = { nome, mat };
+  localStorage.setItem('militar', JSON.stringify(S.militar));
+  alert('✅ Salvo!');
+}
+
+/* ==================== MAPA ==================== */
+function importarMapa(){
+  document.getElementById('fileMapa').click();
+}
+document.getElementById('fileMapa').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  const txt = await f.text();
+  try {
+    S.mapa = JSON.parse(txt);
+    localStorage.setItem('mapa', txt);
+  } catch(err){
+    return alert('❌ Arquivo JSON inválido');
+  }
+  
+  let nuvem = false;
+  try{
+    if(window.fb){
+      for(const [nome, dados] of Object.entries(S.mapa)){
+        await fb.setDoc(fb.doc(fb.db,'mapaCarga',nome), dados);
+      }
+      nuvem = true;
+    }
+  }catch(err){
+    console.warn('Sync nuvem falhou:', err.message);
+  }
+  
+  alert(nuvem 
+    ? '✅ Mapa importado e sincronizado com a guarnição!' 
+    : '✅ Mapa salvo localmente (offline).');
+  carregarUnidades();
+});
+
+async function carregarUnidades(){
+  try{
+    if(window.fb){
+      const snap = await fb.getDocs(fb.collection(fb.db,'mapaCarga'));
+      if(!snap.empty){
+        S.mapa = {};
+        snap.forEach(d => S.mapa[d.id] = d.data());
+        localStorage.setItem('mapa', JSON.stringify(S.mapa));
+      }
+    }
+  }catch(e){ console.warn('Offline:', e.message); }
+  
+  const sel = document.getElementById('selUnidade');
+  sel.innerHTML = '<option value="">-- Selecione --</option>';
+  if(!S.mapa) return;
+  
+  const vtrs = [], salas = [];
+  Object.values(S.mapa).forEach(u => (u.tipo==='SALA'?salas:vtrs).push(u));
+  
+  if(vtrs.length){
+    const g = document.createElement('optgroup'); g.label='🚒 Viaturas';
+    vtrs.forEach(u => g.innerHTML += `<option value="${u.nome}">${u.nome}</option>`);
+    sel.appendChild(g);
+  }
+  if(salas.length){
+    const g = document.createElement('optgroup'); g.label='🏢 Salas';
+    salas.forEach(u => g.innerHTML += `<option value="${u.nome}">${u.nome}</option>`);
+    sel.appendChild(g);
+  }
+}
+
+/* ==================== TABS ==================== */
+function setPapel(btn, p){
+  S.papel = p;
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setModo(btn, m){
+  S.modo = m;
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ==================== INICIAR ==================== */
+function iniciarConferencia(){
+  if(!S.militar) return alert('Cadastre seu nome primeiro');
+  const nome = document.getElementById('selUnidade').value;
+  if(!nome) return alert('Selecione uma unidade');
+  if(!S.mapa || !S.mapa[nome]) return alert('Mapa não carregado');
+  
+  S.unidadeAtual = S.mapa[nome];
+  S.conferencia = {};
+  
+  Object.values(S.unidadeAtual.compartimentos).flat().forEach(it => {
+    S.conferencia[it.id] = {
+      status: S.modo==='rapido' ? 'OK' : 'PEND',
+      qtdEnc: it.qtd, obs:'', fotos:[]
+    };
+  });
+  
+  document.getElementById('tituloConf').textContent = '📋 ' + S.unidadeAtual.nome;
+  document.getElementById('tela-home').classList.add('hidden');
+  document.getElementById('tela-conf').classList.remove('hidden');
+  renderItens();
+}
+
+/* ==================== RENDER ==================== */
+function renderItens(){
+  const busca = document.getElementById('busca').value.toLowerCase();
+  const cont = document.getElementById('listaItens');
+  cont.innerHTML = '';
+  
+  let total=0, ok=0, fal=0, ava=0, pend=0;
+  
+  Object.entries(S.unidadeAtual.compartimentos).forEach(([comp, itens])=>{
+    const filtrados = itens.filter(it => 
+      !busca || it.material.toLowerCase().includes(busca) || comp.toLowerCase().includes(busca)
+    );
+    if(!filtrados.length) return;
+    
+    const tit = document.createElement('div');
+    tit.className = 'compart-title';
+    tit.innerHTML = `<span>📦 ${comp}</span><span class="badge">${filtrados.length}</span>`;
+    const wrap = document.createElement('div');
+    tit.onclick = ()=> wrap.classList.toggle('hidden');
+    cont.appendChild(tit);
+    
+    filtrados.forEach(it => {
+      const c = S.conferencia[it.id];
+      total++;
+      if(c.status==='OK') ok++;
+      else if(c.status==='FAL') fal++;
+      else if(c.status==='AVA') ava++;
+      else pend++;
+      
+      const div = document.createElement('div');
+      div.className = 'item ' + (c.status==='OK'?'ok':c.status==='FAL'?'fal':c.status==='AVA'?'ava':'');
+      div.innerHTML = `
+        <h4>${it.material} <span style="float:right;color:#c0392b">×${it.qtd}</span></h4>
+        ${it.patrimonio?`<small>🏷️ Patrim: ${it.patrimonio}</small>`:''}
+        ${it.serie?`<small>🔢 Série: ${it.serie}</small>`:''}
+        ${it.obs?`<small>📝 ${it.obs}</small>`:''}
+        <div class="row">
+          <button class="ok" onclick="setStatus('${it.id}','OK')">✅ OK</button>
+          <button class="warn" onclick="setStatus('${it.id}','AVA')">⚠️ Avariado</button>
+          <button onclick="setStatus('${it.id}','FAL')">❌ Faltando</button>
+        </div>
+        ${c.status==='FAL' || c.status==='AVA' ? `
+          <textarea placeholder="Observação..." onchange="setObs('${it.id}',this.value)">${c.obs}</textarea>
+          <div class="row">
+            <button class="sec" onclick="tirarFoto('${it.id}')">📸 Foto</button>
+          </div>
+          <div>${c.fotos.map(f=>`<img class="photo-thumb" src="${f}">`).join('')}</div>
+        `:''}
+      `;
+      wrap.appendChild(div);
+    });
+    cont.appendChild(wrap);
+  });
+  
+  document.getElementById('statusBar').innerHTML = `
+    <span class="stat">📋 <b>${total}</b></span>
+    <span class="stat">✅ <b>${ok}</b></span>
+    <span class="stat">❌ <b>${fal}</b></span>
+    <span class="stat">⚠️ <b>${ava}</b></span>
+    ${pend?`<span class="stat">⏳ <b>${pend}</b></span>`:''}
+  `;
+}
+
+function setStatus(id, st){ S.conferencia[id].status = st; renderItens(); }
+function setObs(id, v){ S.conferencia[id].obs = v; }
+
+/* ==================== FOTO (compressão agressiva p/ Firestore) ==================== */
+function tirarFoto(id){
+  const inp = document.createElement('input');
+  inp.type='file'; inp.accept='image/*'; inp.capture='environment';
+  inp.onchange = e => {
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = ev => {
+      const img = new Image();
+      img.onload = ()=>{
+        const cv = document.createElement('canvas');
+        const max=600; let w=img.width, h=img.height;
+        if(w>h && w>max){h=h*max/w;w=max} else if(h>max){w=w*max/h;h=max}
+        cv.width=w; cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        const dataUrl = cv.toDataURL('image/jpeg',0.5);
+        // Limita 3 fotos por item para não estourar limite do Firestore (1MB/doc)
+        if(S.conferencia[id].fotos.length >= 3){
+          alert('Máximo 3 fotos por item');
+          return;
+        }
+        S.conferencia[id].fotos.push(dataUrl);
+        renderItens();
+      };
+      img.src = ev.target.result;
+    };
+    r.readAsDataURL(f);
+  };
+  inp.click();
+}
+
+/* ==================== VOZ ==================== */
+function initVoz(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ document.getElementById('btnVoz').style.display='none'; return; }
+  S.recognition = new SR();
+  S.recognition.lang='pt-BR';
+  S.recognition.continuous=true;
+  S.recognition.interimResults=false;
+  S.recognition.onresult = e => {
+    const txt = e.results[e.results.length-1][0].transcript.toLowerCase().trim();
+    processarVoz(txt);
+  };
+  S.recognition.onend = ()=>{ if(S.ouvindo) try{S.recognition.start()}catch(e){} };
+  S.recognition.onerror = e => console.warn('Voz erro:', e.error);
+}
+function toggleVoz(){
+  if(!S.recognition) return alert('Voz não suportada neste navegador');
+  S.ouvindo = !S.ouvindo;
+  const b = document.getElementById('btnVoz');
+  if(S.ouvindo){
+    try { S.recognition.start(); } catch(e){}
+    b.classList.add('rec');
+    falar('Ouvindo. Diga o item seguido de OK, faltando ou avariado.');
+  } else {
+    S.recognition.stop();
+    b.classList.remove('rec');
+  }
+}
+function falar(t){
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang='pt-BR'; u.rate=1.1; speechSynthesis.speak(u);
+}
+function processarVoz(txt){
+  console.log('🎤', txt);
+  if(!S.unidadeAtual) return;
+  
+  if(txt.includes('finalizar') || txt.includes('concluir')){ finalizarConferencia(); return; }
+  if(txt.includes('voltar')){ voltarHome(); return; }
+  
+  let status = null;
+  if(txt.match(/\b(ok|conforme|presente|certo|tem)\b/)) status='OK';
+  else if(txt.match(/\b(falt|ausent|sumi|nao tem|não tem)/)) status='FAL';
+  else if(txt.match(/\b(avari|quebr|danific|defeit|ruim)/)) status='AVA';
+  
+  if(!status){ falar('Não entendi'); return; }
+  
+  const itens = Object.values(S.unidadeAtual.compartimentos).flat();
+  const palavras = txt.replace(/\b(ok|falta|faltando|avariado|quebrado|conforme|presente|tem|nao|não)\b/g,'').trim().split(/\s+/).filter(p=>p.length>2);
+  
+  let melhor=null, score=0;
+  itens.forEach(it=>{
+    const m = it.material.toLowerCase();
+    let s = 0;
+    palavras.forEach(p => { if(m.includes(p)) s++; });
+    if(s>score){ score=s; melhor=it; }
+  });
+  
+  if(melhor && score>0){
+    S.conferencia[melhor.id].status = status;
+    renderItens();
+    falar(melhor.material+' '+(status==='OK'?'conforme':status==='FAL'?'faltando':'avariado'));
+  } else {
+    falar('Item não encontrado');
+  }
+}
+
+/* ==================== ASSINATURA ==================== */
+function finalizarConferencia(){
+  document.getElementById('tela-conf').classList.add('hidden');
+  document.getElementById('tela-sign').classList.remove('hidden');
+  setTimeout(()=>{
+    initCanvas('sigSainte');
+    initCanvas('sigEntrante');
+  }, 100);
+  if(S.papel==='sainte') document.getElementById('nomeSainte').value = S.militar.nome;
+  else document.getElementById('nomeEntrante').value = S.militar.nome;
+}
+function initCanvas(id){
+  const c = document.getElementById(id);
+  c.width = c.offsetWidth;
+  const ctx = c.getContext('2d');
+  ctx.strokeStyle='#000'; ctx.lineWidth=2; ctx.lineCap='round';
+  let drawing=false;
+  const pos = e => {
+    const r = c.getBoundingClientRect();
+    const t = e.touches?e.touches[0]:e;
+    return [t.clientX-r.left, t.clientY-r.top];
+  };
+  const start = e => { e.preventDefault(); drawing=true; const[x,y]=pos(e); ctx.beginPath(); ctx.moveTo(x,y); };
+  const move = e => { if(!drawing)return; e.preventDefault(); const[x,y]=pos(e); ctx.lineTo(x,y); ctx.stroke(); };
+  const end = ()=> drawing=false;
+  c.onmousedown=start; c.onmousemove=move; c.onmouseup=end; c.onmouseleave=end;
+  c.ontouchstart=start; c.ontouchmove=move; c.ontouchend=end;
+}
+function limparSig(id){
+  const c = document.getElementById(id);
+  c.getContext('2d').clearRect(0,0,c.width,c.height);
+}
+
+/* ==================== PDF + SALVAR ==================== */
+async function gerarRelatorio(){
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+  const u = S.unidadeAtual;
+  const data = new Date().toLocaleString('pt-BR');
+  
+  pdf.setFillColor(192,57,43); pdf.rect(0,0,210,25,'F');
+  pdf.setTextColor(255); pdf.setFontSize(16);
+  pdf.text('PASSAGEM DE SERVICO - '+u.nome, 10, 16);
+  
+  pdf.setTextColor(0); pdf.setFontSize(10);
+  let y = 35;
+  pdf.text(`Data: ${data}`, 10, y); y+=6;
+  pdf.text(`Sainte: ${document.getElementById('nomeSainte').value}`, 10, y); y+=6;
+  pdf.text(`Entrante: ${document.getElementById('nomeEntrante').value}`, 10, y); y+=8;
+  
+  let ok=0,fal=0,ava=0;
+  Object.values(S.conferencia).forEach(c=>{
+    if(c.status==='OK')ok++; else if(c.status==='FAL')fal++; else if(c.status==='AVA')ava++;
+  });
+  pdf.setFontSize(11);
+  pdf.text(`Resumo: ${ok} OK | ${fal} Faltando | ${ava} Avariado`, 10, y); y+=8;
+  
+  pdf.setFontSize(12); pdf.text('ITENS COM OCORRENCIA:', 10, y); y+=6;
+  pdf.setFontSize(9);
+  Object.entries(u.compartimentos).forEach(([comp,itens])=>{
+    itens.forEach(it=>{
+      const c = S.conferencia[it.id];
+      if(c.status==='FAL' || c.status==='AVA'){
+        if(y>270){ pdf.addPage(); y=20; }
+        const ico = c.status==='FAL'?'[FALTANDO]':'[AVARIADO]';
+        pdf.text(`${ico} ${comp} - ${it.material}`, 10, y); y+=5;
+        if(c.obs){ pdf.text(`  Obs: ${c.obs}`, 10, y); y+=5; }
+      }
+    });
+  });
+  
+  const obs = document.getElementById('obsGeral').value;
+  if(obs){ y+=4; pdf.setFontSize(11); pdf.text('Observacoes: '+obs, 10, y, {maxWidth:190}); y+=10; }
+  
+  if(y>240){ pdf.addPage(); y=20; }
+  y+=10;
+  try {
+    pdf.addImage(document.getElementById('sigSainte').toDataURL(), 'PNG', 10, y, 80, 30);
+    pdf.addImage(document.getElementById('sigEntrante').toDataURL(), 'PNG', 110, y, 80, 30);
+  } catch(e){}
+  pdf.line(10,y+32,90,y+32); pdf.line(110,y+32,190,y+32);
+  pdf.setFontSize(9);
+  pdf.text('Sainte: '+document.getElementById('nomeSainte').value, 10, y+37);
+  pdf.text('Entrante: '+document.getElementById('nomeEntrante').value, 110, y+37);
+  
+  const fname = `passagem_${u.nome}_${Date.now()}.pdf`;
+  pdf.save(fname);
+  
+  // Salvar no Firestore
+  let nuvem = false;
+  try{
+    if(window.fb){
+      const reg = {
+        unidade: u.nome,
+        data: new Date().toISOString(),
+        sainte: document.getElementById('nomeSainte').value,
+        entrante: document.getElementById('nomeEntrante').value,
+        obs, resumo: {ok,fal,ava},
+        conferencia: S.conferencia,
+        militarRegistro: S.militar
+      };
+      await fb.setDoc(fb.doc(fb.db,'passagens',`${u.nome}_${Date.now()}`), reg);
+      nuvem = true;
+    }
+  }catch(e){ console.warn('Sync falhou:', e.message); }
+  
+  // Sempre salva local também (backup)
+  const hist = JSON.parse(localStorage.getItem('historico')||'[]');
+  hist.unshift({
+    unidade:u.nome, data:new Date().toISOString(),
+    sainte: document.getElementById('nomeSainte').value,
+    entrante: document.getElementById('nomeEntrante').value,
+    resumo:{ok,fal,ava}
+  });
+  localStorage.setItem('historico', JSON.stringify(hist.slice(0,50)));
+  
+  alert(nuvem 
+    ? '✅ PDF gerado e passagem sincronizada com a guarnição!' 
+    : '✅ PDF gerado e salvo localmente.');
+  voltarHome();
+}
+
+/* ==================== HISTÓRICO ==================== */
+async function abrirHistorico(){
+  let regs = [];
+  try{
+    if(window.fb){
+      const q = fb.query(fb.collection(fb.db,'passagens'), fb.orderBy('data','desc'), fb.limit(20));
+      const snap = await fb.getDocs(q);
+      snap.forEach(d => regs.push(d.data()));
+    }
+  }catch(e){
+    console.warn('Histórico nuvem falhou:', e.message);
+  }
+  if(!regs.length){
+    regs = JSON.parse(localStorage.getItem('historico')||'[]');
+  }
+  if(!regs.length) return alert('Nenhuma passagem registrada ainda.');
+  const txt = regs.slice(0,10).map(r => 
+    `📅 ${new Date(r.data).toLocaleString('pt-BR')}\n🚒 ${r.unidade}\n👤 ${r.entrante||'?'} ← ${r.sainte||'?'}\n${r.resumo?`✅${r.resumo.ok} ❌${r.resumo.fal} ⚠️${r.resumo.ava}`:''}`
+  ).join('\n\n────────\n\n');
+  alert(txt);
+}
+
+/* ==================== NAV ==================== */
+function voltarHome(){
+  document.getElementById('tela-conf').classList.add('hidden');
+  document.getElementById('tela-sign').classList.add('hidden');
+  document.getElementById('tela-home').classList.remove('hidden');
+}
+
+Object.assign(window, {salvarMilitar,importarMapa,setPapel,setModo,iniciarConferencia,setStatus,setObs,tirarFoto,toggleVoz,finalizarConferencia,limparSig,gerarRelatorio,abrirHistorico,voltarHome,renderItens});
+</script>
+
+</body>
+</html>
