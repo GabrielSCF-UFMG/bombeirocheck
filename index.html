@@ -11,7 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#1a1a1a;color:#eee;min-height:100vh;padding-bottom:80px}
 header{background:linear-gradient(135deg,#c0392b,#e74c3c);padding:14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.5)}
-header h1{font-size:20px;color:#fff;display:flex;align-items:center;gap:8px}
+header h1{font-size:20px;color:#fff;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
 .container{padding:14px;max-width:800px;margin:0 auto}
 .card{background:#2a2a2a;border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid #3a3a3a}
 .card h2{font-size:16px;color:#e74c3c;margin-bottom:12px;display:flex;align-items:center;gap:6px}
@@ -47,16 +47,106 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
 .fab-voz.rec{background:#e74c3c;animation:pulse 1.2s infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 .search-box{position:sticky;top:60px;background:#1a1a1a;padding:8px 0;z-index:50}
-optgroup{font-weight:700;color:#e74c3c}
 .online-badge{font-size:11px;padding:3px 8px;border-radius:10px;background:#27ae60;margin-left:auto}
 .online-badge.off{background:#7f8c8d}
+
+/* CARDS DE TIPO */
+.tipo-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.tipo-card{background:linear-gradient(135deg,#2a2a2a,#1f1f1f);border:2px solid #3a3a3a;border-radius:12px;padding:24px 12px;text-align:center;cursor:pointer;transition:.2s;color:#eee}
+.tipo-card:hover{border-color:#e74c3c;background:linear-gradient(135deg,#3a2020,#2a1515);transform:translateY(-2px)}
+.tipo-card .ico{font-size:48px;margin-bottom:8px;display:block}
+.tipo-card .titulo{font-size:16px;font-weight:700;margin-bottom:4px}
+.tipo-card .qtd{font-size:12px;color:#999}
+
+/* CATEGORIAS E UNIDADES */
+.cat-section{margin-bottom:16px}
+.cat-titulo{font-size:13px;color:#e74c3c;font-weight:700;text-transform:uppercase;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #3a3a3a;letter-spacing:.5px}
+.unid-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.unid-card{background:#2a2a2a;border:2px solid #3a3a3a;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:.15s;color:#eee;font-weight:600;font-size:13px}
+.unid-card:hover{border-color:#e74c3c;background:#332020;transform:scale(1.03)}
+.unid-card .ico-mini{font-size:22px;display:block;margin-bottom:4px}
+.unid-card .qtd-itens{font-size:10px;color:#888;font-weight:400;margin-top:2px}
+
+/* ADMIN */
+#painelAdmin{border:2px dashed #f39c12}
+#painelAdmin h2{color:#f39c12}
+.admin-tag{font-size:10px;background:#f39c12;color:#000;padding:2px 6px;border-radius:4px;margin-left:6px;font-weight:700}
+.aviso-vazio{text-align:center;padding:30px 14px;color:#888}
+.aviso-vazio .ico-big{font-size:48px;display:block;margin-bottom:10px}
+
+/* ===== NOVO: TOUR DE BOAS-VINDAS ===== */
+.tour-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease}
+.tour-overlay.ativo{display:flex}
+.tour-card{background:linear-gradient(135deg,#2a2a2a,#1f1f1f);border-radius:16px;padding:28px 22px;max-width:400px;width:100%;color:#fff;text-align:center;box-shadow:0 20px 60px rgba(192,57,43,.4);border:2px solid #c0392b;position:relative}
+.tour-icone{font-size:64px;margin-bottom:12px;animation:tourBounce 1.2s ease infinite}
+.tour-titulo{font-size:22px;font-weight:800;margin-bottom:10px;color:#fff}
+.tour-texto{font-size:14px;line-height:1.5;color:#ccc;margin-bottom:18px}
+.tour-texto strong{color:#e74c3c}
+.tour-progresso{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.tour-bolinha{width:8px;height:8px;border-radius:50%;background:#444;transition:all .3s}
+.tour-bolinha.ativa{background:#e74c3c;width:24px;border-radius:4px}
+.tour-botoes{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.tour-btn{padding:10px 20px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;width:auto;margin:0}
+.tour-btn.primario{background:#c0392b;color:#fff}
+.tour-btn.primario:hover{background:#e74c3c;transform:scale(1.05)}
+.tour-btn.secundario{background:#34495e;color:#fff}
+.tour-btn.secundario:hover{background:#465a70}
+.tour-pular{position:absolute;top:-30px;right:0;background:transparent;border:none;color:#999;cursor:pointer;font-size:12px;text-decoration:underline;width:auto;padding:4px;margin:0}
+
+/* ===== NOVO: TELA DE AJUDA ===== */
+.ajuda-busca{margin-bottom:12px}
+.ajuda-cat{background:#1f1f1f;border-radius:10px;padding:14px;margin-bottom:8px;border-left:4px solid #c0392b;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:12px}
+.ajuda-cat:hover{background:#2a2020;transform:translateX(3px)}
+.ajuda-cat-ico{font-size:28px;flex-shrink:0}
+.ajuda-cat-info{flex:1}
+.ajuda-cat-titulo{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.ajuda-cat-desc{font-size:11px;color:#888}
+.ajuda-passo{background:#1f1f1f;padding:12px;border-radius:8px;margin-bottom:8px;border-left:3px solid #27ae60;display:flex;gap:10px;align-items:flex-start}
+.ajuda-passo-num{background:#c0392b;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.ajuda-passo-txt{font-size:13px;line-height:1.5;color:#ddd}
+.ajuda-passo-txt strong{color:#e74c3c}
+.faq-item{background:#1f1f1f;border-radius:8px;margin-bottom:6px;overflow:hidden;cursor:pointer}
+.faq-q{padding:12px;font-size:13px;font-weight:600;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.faq-q::after{content:'+';font-size:18px;color:#e74c3c;transition:transform .2s}
+.faq-item.aberto .faq-q::after{transform:rotate(45deg)}
+.faq-r{padding:0 12px;max-height:0;overflow:hidden;transition:all .3s;font-size:12px;color:#bbb;line-height:1.5}
+.faq-item.aberto .faq-r{padding:0 12px 12px;max-height:400px}
+
+/* ===== NOVO: BOTÃO HELP FLUTUANTE ===== */
+.fab-help{position:fixed;bottom:20px;left:20px;width:48px;height:48px;border-radius:50%;background:#3498db;font-size:22px;font-weight:700;box-shadow:0 4px 15px rgba(52,152,219,.5);z-index:200;padding:0;color:#fff;border:none;cursor:pointer}
+.fab-help:hover{background:#2980b9}
+.dica-tooltip{position:fixed;bottom:78px;left:20px;max-width:280px;background:#2a2a2a;color:#fff;padding:14px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:201;display:none;border:2px solid #3498db;animation:slideUp .3s ease}
+.dica-tooltip.ativa{display:block}
+.dica-tit{font-size:13px;font-weight:700;margin-bottom:6px;color:#3498db}
+.dica-txt{font-size:12px;line-height:1.5;color:#ddd}
+.dica-fechar{position:absolute;top:6px;right:8px;background:none;border:none;color:#888;cursor:pointer;font-size:16px;width:auto;padding:2px;margin:0}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes tourBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🚒 BombeiroCheck <span id="onlineBadge" class="online-badge">●</span></h1>
+  <h1 id="logoApp">🚒 BombeiroCheck <span id="onlineBadge" class="online-badge">●</span></h1>
 </header>
+
+<!-- ===== NOVO: TOUR DE BOAS-VINDAS ===== -->
+<div class="tour-overlay" id="tourOverlay">
+  <div style="position:relative;width:100%;max-width:400px">
+    <button class="tour-pular" onclick="pularTour()">Pular tutorial ✕</button>
+    <div class="tour-card" id="tourCard"></div>
+  </div>
+</div>
+
+<!-- ===== NOVO: BOTÃO HELP FLUTUANTE ===== -->
+<button class="fab-help" id="btnHelp" onclick="toggleDica()" title="Ajuda">?</button>
+<div class="dica-tooltip" id="dicaTooltip">
+  <button class="dica-fechar" onclick="fecharDica()">✕</button>
+  <div class="dica-tit" id="dicaTit">💡 Dica</div>
+  <div class="dica-txt" id="dicaTxt"></div>
+</div>
 
 <div class="container">
 
@@ -69,35 +159,80 @@ optgroup{font-weight:700;color:#e74c3c}
       <button onclick="salvarMilitar()">💾 Salvar</button>
     </div>
 
-    <div class="card">
-      <h2>📋 Mapa de Carga</h2>
+    <!-- ÁREA ADMIN (escondida por padrão) -->
+    <div class="card hidden" id="painelAdmin">
+      <h2>🔧 Área Admin <span class="admin-tag">RESTRITO</span></h2>
       <button class="sec" onclick="importarMapa()">📥 Importar mapa-carga.json</button>
       <input type="file" id="fileMapa" accept=".json" style="display:none">
-      <small style="color:#888">Use o conversor.html para gerar o JSON do Excel</small>
+      <small style="color:#888;display:block;margin:4px 0 12px">⚠️ Sobrescreve o mapa atual e sincroniza com toda guarnição</small>
+      <button class="sec" onclick="fecharAdmin()">✖️ Fechar admin</button>
     </div>
 
     <div class="card">
-      <h2>🚒 Iniciar Conferência</h2>
-      <select id="selUnidade"><option value="">-- Selecione --</option></select>
+      <h2>📋 Iniciar Conferência</h2>
       
-      <label style="font-size:13px;color:#aaa">Seu papel:</label>
-      <div class="tabs">
-        <button class="active" onclick="setPapel(this,'entrante')">🟢 Entrante</button>
-        <button onclick="setPapel(this,'sainte')">🔴 Sainte</button>
+      <!-- ETAPA 1: Tipo -->
+      <div id="etapa-tipo">
+        <label style="font-size:13px;color:#aaa;display:block;margin-bottom:8px">O que você vai conferir?</label>
+        <div class="tipo-cards">
+          <div class="tipo-card" onclick="selecionarTipo('VIATURA')">
+            <span class="ico">🚒</span>
+            <div class="titulo">VIATURA</div>
+            <div class="qtd" id="qtdViaturas">— unidades</div>
+          </div>
+          <div class="tipo-card" onclick="selecionarTipo('SETOR')">
+            <span class="ico">🏢</span>
+            <div class="titulo">SETOR/SALA</div>
+            <div class="qtd" id="qtdSetores">— unidades</div>
+          </div>
+        </div>
+        <div id="avisoVazio" class="hidden aviso-vazio">
+          <span class="ico-big">📭</span>
+          <div><b>Nenhum mapa de carga carregado</b></div>
+          <small>Aguarde o admin importar o mapa-carga</small>
+        </div>
       </div>
       
-      <label style="font-size:13px;color:#aaa">Modo:</label>
-      <div class="tabs">
-        <button class="active" onclick="setModo(this,'completo')">📝 Completo</button>
-        <button onclick="setModo(this,'rapido')">⚡ Rápido</button>
+      <!-- ETAPA 2: Escolher unidade -->
+      <div id="etapa-unidade" class="hidden">
+        <button class="sec" onclick="voltarTipo()" style="margin-bottom:10px">← Voltar</button>
+        <div id="listaUnidades"></div>
       </div>
       
-      <button onclick="iniciarConferencia()">▶️ Começar</button>
+      <!-- ETAPA 3: Configurar -->
+      <div id="etapa-config" class="hidden">
+        <button class="sec" onclick="voltarUnidade()" style="margin-bottom:10px">← Voltar</button>
+        <div style="background:#1a1a1a;padding:14px;border-radius:8px;margin-bottom:12px;text-align:center">
+          <div style="font-size:11px;color:#999">Conferindo:</div>
+          <div id="unidadeEscolhida" style="font-size:22px;font-weight:700;color:#e74c3c;margin-top:4px"></div>
+        </div>
+        
+        <label style="font-size:13px;color:#aaa">Seu papel:</label>
+        <div class="tabs">
+          <button class="active" onclick="setPapel(this,'entrante')">🟢 Entrante</button>
+          <button onclick="setPapel(this,'sainte')">🔴 Sainte</button>
+        </div>
+        
+        <label style="font-size:13px;color:#aaa">Modo:</label>
+        <div class="tabs">
+          <button class="active" onclick="setModo(this,'completo')">📝 Completo</button>
+          <button onclick="setModo(this,'rapido')">⚡ Rápido</button>
+        </div>
+        
+        <button onclick="iniciarConferencia()">▶️ Começar</button>
+      </div>
     </div>
 
     <div class="card">
       <h2>📚 Histórico</h2>
       <button class="sec" onclick="abrirHistorico()">📜 Ver passagens anteriores</button>
+    </div>
+
+    <!-- ===== NOVO: CARD DE AJUDA ===== -->
+    <div class="card">
+      <h2>📚 Manual & Ajuda</h2>
+      <button class="sec" onclick="abrirAjuda()" style="background:#27ae60">📖 Como usar o app</button>
+      <small style="color:#888;display:block;margin-top:6px;text-align:center">Tutoriais, FAQ e dicas rápidas</small>
     </div>
   </div>
 
@@ -119,21 +254,102 @@ optgroup{font-weight:700;color:#e74c3c}
   <div id="tela-sign" class="hidden">
     <div class="card">
       <h2>✍️ Assinaturas</h2>
-      
       <textarea id="obsGeral" placeholder="Observações gerais da passagem..."></textarea>
-      
       <h3 style="margin:12px 0 6px;color:#e74c3c;font-size:14px">🔴 Sainte (quem entrega)</h3>
       <input id="nomeSainte" placeholder="Nome do sainte">
       <canvas id="sigSainte"></canvas>
       <button class="sec" onclick="limparSig('sigSainte')">🧹 Limpar</button>
-      
       <h3 style="margin:12px 0 6px;color:#27ae60;font-size:14px">🟢 Entrante (quem recebe)</h3>
       <input id="nomeEntrante" placeholder="Nome do entrante">
       <canvas id="sigEntrante"></canvas>
       <button class="sec" onclick="limparSig('sigEntrante')">🧹 Limpar</button>
-      
       <button onclick="gerarRelatorio()" style="margin-top:14px">📄 Gerar PDF & Salvar</button>
       <button class="sec" onclick="document.getElementById('tela-sign').classList.add('hidden');document.getElementById('tela-conf').classList.remove('hidden')">← Voltar</button>
+    </div>
+  </div>
+
+  <!-- ===== NOVO: TELA AJUDA ===== -->
+  <div id="tela-ajuda" class="hidden">
+    <div class="card">
+      <button class="sec" onclick="fecharAjuda()" style="margin-bottom:10px">← Voltar</button>
+      <h2>📚 Central de Ajuda</h2>
+      
+      <input type="text" class="ajuda-busca" id="buscaAjuda" placeholder="🔍 O que você quer saber?" oninput="filtrarAjuda()">
+      
+      <div id="ajudaCategorias">
+        <div class="ajuda-cat" onclick="abrirTopico('instalar')">
+          <div class="ajuda-cat-ico">📲</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Como instalar o app</div>
+            <div class="ajuda-cat-desc">Android e iPhone</div>
+          </div>
+        </div>
+        <div class="ajuda-cat" onclick="abrirTopico('identificacao')">
+          <div class="ajuda-cat-ico">👤</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Cadastrar identificação</div>
+            <div class="ajuda-cat-desc">Nome de guerra e matrícula</div>
+          </div>
+        </div>
+        <div class="ajuda-cat" onclick="abrirTopico('passagem')">
+          <div class="ajuda-cat-ico">🚒</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Fazer passagem de serviço</div>
+            <div class="ajuda-cat-desc">Passo a passo completo</div>
+          </div>
+        </div>
+        <div class="ajuda-cat" onclick="abrirTopico('itens')">
+          <div class="ajuda-cat-ico">✅</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Marcar itens (OK / Avariado / Faltando)</div>
+            <div class="ajuda-cat-desc">Como conferir cada material</div>
+          </div>
+        </div>
+        <div class="ajuda-cat" onclick="abrirTopico('voz')">
+          <div class="ajuda-cat-ico">🎙️</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Comando por voz</div>
+            <div class="ajuda-cat-desc">Mãos livres durante conferência</div>
+          </div>
+        </div>
+        <div class="ajuda-cat" onclick="abrirTopico('foto')">
+          <div class="ajuda-cat-ico">📸</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Anexar fotos</div>
+            <div class="ajuda-cat-desc">Documentar avarias</div>
+          </div>
+        </div>
+        <div class="ajuda-cat" onclick="abrirTopico('pdf')">
+          <div class="ajuda-cat-ico">📄</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Gerar PDF e assinar</div>
+            <div class="ajuda-cat-desc">Finalizando a passagem</div>
+          </div>
+        </div>
+        <div class="ajuda-cat" onclick="abrirTopico('historico')">
+          <div class="ajuda-cat-ico">📜</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Ver histórico</div>
+            <div class="ajuda-cat-desc">Consultar passagens antigas</div>
+          </div>
+        </div>
+        <div class="ajuda-cat" onclick="abrirTopico('faq')">
+          <div class="ajuda-cat-ico">❓</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Perguntas frequentes</div>
+            <div class="ajuda-cat-desc">FAQ completo</div>
+          </div>
+        </div>
+        <div class="ajuda-cat" onclick="reverTour()">
+          <div class="ajuda-cat-ico">🎬</div>
+          <div class="ajuda-cat-info">
+            <div class="ajuda-cat-titulo">Rever tour de boas-vindas</div>
+            <div class="ajuda-cat-desc">Tutorial inicial passo a passo</div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="ajudaConteudo"></div>
     </div>
   </div>
 
@@ -151,7 +367,6 @@ if('serviceWorker' in navigator){
 }
 </script>
 
-<!-- Bibliotecas -->
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
 <script type="module">
@@ -174,14 +389,13 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Login anônimo automático
 signInAnonymously(auth)
   .then(()=> {
     document.getElementById('onlineBadge').textContent = '● online';
     document.getElementById('onlineBadge').classList.remove('off');
   })
   .catch(e => {
-    console.warn('Auth falhou (modo offline):', e.message);
+    console.warn('Auth falhou (offline):', e.message);
     document.getElementById('onlineBadge').textContent = '● offline';
     document.getElementById('onlineBadge').classList.add('off');
   });
@@ -190,29 +404,101 @@ window.fb = { db, collection, doc, setDoc, getDoc, getDocs, query, orderBy, limi
 </script>
 
 <script>
-/* ==================== ESTADO ==================== */
+/* ========== CONFIG ========== */
+const SENHA_ADMIN = "SdSouzaCosta";
+
+/* Categorização automática por nome da unidade */
+function categorizarUnidade(nome, tipo){
+  const n = nome.toUpperCase();
+  if(tipo === 'VIATURA'){
+    if(n.startsWith('ABTS') || n.startsWith('ATB')) return '⛽ Combate a Incêndio';
+    if(n.startsWith('ASF') || n.startsWith('ACIF')) return '🌳 Incêndio Florestal';
+    if(n.startsWith('ASM') || n.startsWith('ASL') || n.startsWith('ASA')) return '⛰️ Salvamento';
+    if(n.startsWith('UR') || n.startsWith('USA')) return '🚑 Resgate / APH';
+    return '🚒 Outras Viaturas';
+  } else {
+    if(n.includes('OPERACIO') || n === 'SOU') return '🏢 Operacional';
+    if(n.includes('MEIO') || n.includes('ADMIN')) return '📦 Administrativo';
+    if(n.includes('MERGULHO') || n.includes('FLORESTAL')) return '🤿 Especializado';
+    if(n.includes('OFICINA') || n.includes('MANUT')) return '🔧 Manutenção';
+    return '🏢 Outros Setores';
+  }
+}
+
+function iconeUnidade(nome, tipo){
+  const n = nome.toUpperCase();
+  if(tipo === 'VIATURA'){
+    if(n.startsWith('ABTS') || n.startsWith('ATB')) return '🚒';
+    if(n.startsWith('ASF') || n.startsWith('ACIF')) return '🌲';
+    if(n.startsWith('ASM') || n.startsWith('ASL')) return '⛑️';
+    if(n.startsWith('UR')) return '🚑';
+    return '🚐';
+  } else {
+    if(n === 'SOU') return '📊';
+    if(n.includes('MEIO')) return '📦';
+    if(n.includes('MERGULHO')) return '🤿';
+    if(n.includes('OFICINA')) return '🔧';
+    return '🏢';
+  }
+}
+
+/* ========== ESTADO ========== */
 const S = {
   militar: JSON.parse(localStorage.getItem('militar')||'null'),
   mapa: JSON.parse(localStorage.getItem('mapa')||'null'),
+  tipoEscolhido: null,
   unidadeAtual: null,
   papel: 'entrante',
   modo: 'completo',
   conferencia: {},
   recognition: null,
-  ouvindo: false
+  ouvindo: false,
+  cliquesLogo: 0,
+  timerLogo: null,
+  telaAtual: 'home' /* ===== NOVO ===== */
 };
 
-/* ==================== INIT ==================== */
+/* ========== INIT ========== */
 window.addEventListener('load', () => {
   if (S.militar) {
     document.getElementById('meuNome').value = S.militar.nome;
     document.getElementById('minhaMat').value = S.militar.mat;
   }
-  setTimeout(carregarUnidades, 1500); // espera auth
+  setTimeout(carregarMapaNuvem, 1500);
   initVoz();
+  initAdminLogo();
+  atualizarContadores();
+  
+  /* ===== NOVO: Tour automático na 1ª abertura ===== */
+  if(!localStorage.getItem('tour_completado')){
+    setTimeout(() => iniciarTour(), 1000);
+  }
 });
 
-/* ==================== MILITAR ==================== */
+/* ========== ADMIN ESCONDIDO (5 cliques no logo) ========== */
+function initAdminLogo(){
+  document.getElementById('logoApp').addEventListener('click', () => {
+    S.cliquesLogo++;
+    clearTimeout(S.timerLogo);
+    S.timerLogo = setTimeout(() => S.cliquesLogo = 0, 2000);
+    
+    if(S.cliquesLogo >= 5){
+      S.cliquesLogo = 0;
+      const senha = prompt('🔐 Senha de administrador:');
+      if(senha === SENHA_ADMIN){
+        document.getElementById('painelAdmin').classList.remove('hidden');
+        alert('✅ Modo admin ativado!');
+      } else if(senha !== null){
+        alert('❌ Senha incorreta');
+      }
+    }
+  });
+}
+function fecharAdmin(){
+  document.getElementById('painelAdmin').classList.add('hidden');
+}
+
+/* ========== MILITAR ========== */
 function salvarMilitar(){
   const nome = document.getElementById('meuNome').value.trim();
   const mat = document.getElementById('minhaMat').value.trim();
@@ -222,19 +508,16 @@ function salvarMilitar(){
   alert('✅ Salvo!');
 }
 
-/* ==================== MAPA ==================== */
-function importarMapa(){
-  document.getElementById('fileMapa').click();
-}
+/* ========== MAPA ========== */
+function importarMapa(){ document.getElementById('fileMapa').click(); }
+
 document.getElementById('fileMapa').addEventListener('change', async (e)=>{
   const f = e.target.files[0]; if(!f) return;
   const txt = await f.text();
   try {
     S.mapa = JSON.parse(txt);
     localStorage.setItem('mapa', txt);
-  } catch(err){
-    return alert('❌ Arquivo JSON inválido');
-  }
+  } catch(err){ return alert('❌ JSON inválido'); }
   
   let nuvem = false;
   try{
@@ -244,17 +527,13 @@ document.getElementById('fileMapa').addEventListener('change', async (e)=>{
       }
       nuvem = true;
     }
-  }catch(err){
-    console.warn('Sync nuvem falhou:', err.message);
-  }
+  }catch(err){ console.warn('Sync falhou:', err.message); }
   
-  alert(nuvem 
-    ? '✅ Mapa importado e sincronizado com a guarnição!' 
-    : '✅ Mapa salvo localmente (offline).');
-  carregarUnidades();
+  alert(nuvem ? '✅ Mapa sincronizado com toda guarnição!' : '✅ Mapa salvo localmente.');
+  atualizarContadores();
 });
 
-async function carregarUnidades(){
+async function carregarMapaNuvem(){
   try{
     if(window.fb){
       const snap = await fb.getDocs(fb.collection(fb.db,'mapaCarga'));
@@ -265,27 +544,91 @@ async function carregarUnidades(){
       }
     }
   }catch(e){ console.warn('Offline:', e.message); }
-  
-  const sel = document.getElementById('selUnidade');
-  sel.innerHTML = '<option value="">-- Selecione --</option>';
-  if(!S.mapa) return;
-  
-  const vtrs = [], salas = [];
-  Object.values(S.mapa).forEach(u => (u.tipo==='SALA'?salas:vtrs).push(u));
-  
-  if(vtrs.length){
-    const g = document.createElement('optgroup'); g.label='🚒 Viaturas';
-    vtrs.forEach(u => g.innerHTML += `<option value="${u.nome}">${u.nome}</option>`);
-    sel.appendChild(g);
-  }
-  if(salas.length){
-    const g = document.createElement('optgroup'); g.label='🏢 Salas';
-    salas.forEach(u => g.innerHTML += `<option value="${u.nome}">${u.nome}</option>`);
-    sel.appendChild(g);
-  }
+  atualizarContadores();
 }
 
-/* ==================== TABS ==================== */
+function atualizarContadores(){
+  const aviso = document.getElementById('avisoVazio');
+  if(!S.mapa || Object.keys(S.mapa).length === 0){
+    document.getElementById('qtdViaturas').textContent = '— unidades';
+    document.getElementById('qtdSetores').textContent = '— unidades';
+    aviso.classList.remove('hidden');
+    return;
+  }
+  aviso.classList.add('hidden');
+  let v=0, s=0;
+  Object.values(S.mapa).forEach(u => {
+    if(u.tipo === 'VIATURA') v++;
+    else s++;
+  });
+  document.getElementById('qtdViaturas').textContent = `${v} unidade${v!==1?'s':''}`;
+  document.getElementById('qtdSetores').textContent = `${s} unidade${s!==1?'s':''}`;
+}
+
+/* ========== NAVEGAÇÃO POR ETAPAS ========== */
+function selecionarTipo(tipo){
+  if(!S.mapa) return alert('Aguarde o mapa carregar');
+  S.tipoEscolhido = tipo;
+  
+  const unidades = Object.values(S.mapa).filter(u => u.tipo === tipo);
+  if(!unidades.length) return alert(`Nenhuma ${tipo.toLowerCase()} cadastrada`);
+  
+  const grupos = {};
+  unidades.forEach(u => {
+    const cat = categorizarUnidade(u.nome, tipo);
+    if(!grupos[cat]) grupos[cat] = [];
+    grupos[cat].push(u);
+  });
+  
+  const cont = document.getElementById('listaUnidades');
+  cont.innerHTML = '';
+  
+  Object.entries(grupos).forEach(([cat, uns]) => {
+    const sec = document.createElement('div');
+    sec.className = 'cat-section';
+    sec.innerHTML = `<div class="cat-titulo">${cat}</div><div class="unid-grid"></div>`;
+    const grid = sec.querySelector('.unid-grid');
+    
+    uns.forEach(u => {
+      const totalItens = Object.values(u.compartimentos||{}).reduce((s,arr)=>s+arr.length,0);
+      const card = document.createElement('div');
+      card.className = 'unid-card';
+      card.innerHTML = `
+        <span class="ico-mini">${iconeUnidade(u.nome, tipo)}</span>
+        ${u.nome}
+        <div class="qtd-itens">${totalItens} itens</div>
+      `;
+      card.onclick = () => selecionarUnidade(u.nome);
+      grid.appendChild(card);
+    });
+    cont.appendChild(sec);
+  });
+  
+  document.getElementById('etapa-tipo').classList.add('hidden');
+  document.getElementById('etapa-unidade').classList.remove('hidden');
+  S.telaAtual = 'selecao'; /* NOVO */
+}
+
+function selecionarUnidade(nome){
+  S.unidadeAtual = S.mapa[nome];
+  document.getElementById('unidadeEscolhida').textContent = `${iconeUnidade(nome, S.tipoEscolhido)} ${nome}`;
+  document.getElementById('etapa-unidade').classList.add('hidden');
+  document.getElementById('etapa-config').classList.remove('hidden');
+  S.telaAtual = 'config'; /* NOVO */
+}
+
+function voltarTipo(){
+  document.getElementById('etapa-unidade').classList.add('hidden');
+  document.getElementById('etapa-tipo').classList.remove('hidden');
+  S.telaAtual = 'home'; /* NOVO */
+}
+function voltarUnidade(){
+  document.getElementById('etapa-config').classList.add('hidden');
+  document.getElementById('etapa-unidade').classList.remove('hidden');
+  S.telaAtual = 'selecao'; /* NOVO */
+}
+
+/* ========== TABS ========== */
 function setPapel(btn, p){
   S.papel = p;
   btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
@@ -297,16 +640,12 @@ function setModo(btn, m){
   btn.classList.add('active');
 }
 
-/* ==================== INICIAR ==================== */
+/* ========== INICIAR CONFERÊNCIA ========== */
 function iniciarConferencia(){
   if(!S.militar) return alert('Cadastre seu nome primeiro');
-  const nome = document.getElementById('selUnidade').value;
-  if(!nome) return alert('Selecione uma unidade');
-  if(!S.mapa || !S.mapa[nome]) return alert('Mapa não carregado');
+  if(!S.unidadeAtual) return alert('Selecione uma unidade');
   
-  S.unidadeAtual = S.mapa[nome];
   S.conferencia = {};
-  
   Object.values(S.unidadeAtual.compartimentos).flat().forEach(it => {
     S.conferencia[it.id] = {
       status: S.modo==='rapido' ? 'OK' : 'PEND',
@@ -317,10 +656,11 @@ function iniciarConferencia(){
   document.getElementById('tituloConf').textContent = '📋 ' + S.unidadeAtual.nome;
   document.getElementById('tela-home').classList.add('hidden');
   document.getElementById('tela-conf').classList.remove('hidden');
+  S.telaAtual = 'conferencia'; /* NOVO */
   renderItens();
 }
 
-/* ==================== RENDER ==================== */
+/* ========== RENDER ITENS ========== */
 function renderItens(){
   const busca = document.getElementById('busca').value.toLowerCase();
   const cont = document.getElementById('listaItens');
@@ -363,9 +703,7 @@ function renderItens(){
         </div>
         ${c.status==='FAL' || c.status==='AVA' ? `
           <textarea placeholder="Observação..." onchange="setObs('${it.id}',this.value)">${c.obs}</textarea>
-          <div class="row">
-            <button class="sec" onclick="tirarFoto('${it.id}')">📸 Foto</button>
-          </div>
+          <div class="row"><button class="sec" onclick="tirarFoto('${it.id}')">📸 Foto</button></div>
           <div>${c.fotos.map(f=>`<img class="photo-thumb" src="${f}">`).join('')}</div>
         `:''}
       `;
@@ -386,7 +724,7 @@ function renderItens(){
 function setStatus(id, st){ S.conferencia[id].status = st; renderItens(); }
 function setObs(id, v){ S.conferencia[id].obs = v; }
 
-/* ==================== FOTO (compressão agressiva p/ Firestore) ==================== */
+/* ========== FOTO ========== */
 function tirarFoto(id){
   const inp = document.createElement('input');
   inp.type='file'; inp.accept='image/*'; inp.capture='environment';
@@ -401,13 +739,8 @@ function tirarFoto(id){
         if(w>h && w>max){h=h*max/w;w=max} else if(h>max){w=w*max/h;h=max}
         cv.width=w; cv.height=h;
         cv.getContext('2d').drawImage(img,0,0,w,h);
-        const dataUrl = cv.toDataURL('image/jpeg',0.5);
-        // Limita 3 fotos por item para não estourar limite do Firestore (1MB/doc)
-        if(S.conferencia[id].fotos.length >= 3){
-          alert('Máximo 3 fotos por item');
-          return;
-        }
-        S.conferencia[id].fotos.push(dataUrl);
+        if(S.conferencia[id].fotos.length >= 3) return alert('Máximo 3 fotos');
+        S.conferencia[id].fotos.push(cv.toDataURL('image/jpeg',0.5));
         renderItens();
       };
       img.src = ev.target.result;
@@ -417,7 +750,7 @@ function tirarFoto(id){
   inp.click();
 }
 
-/* ==================== VOZ ==================== */
+/* ========== VOZ ========== */
 function initVoz(){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR){ document.getElementById('btnVoz').style.display='none'; return; }
@@ -430,10 +763,10 @@ function initVoz(){
     processarVoz(txt);
   };
   S.recognition.onend = ()=>{ if(S.ouvindo) try{S.recognition.start()}catch(e){} };
-  S.recognition.onerror = e => console.warn('Voz erro:', e.error);
+  S.recognition.onerror = e => console.warn('Voz:', e.error);
 }
 function toggleVoz(){
-  if(!S.recognition) return alert('Voz não suportada neste navegador');
+  if(!S.recognition) return alert('Voz não suportada');
   S.ouvindo = !S.ouvindo;
   const b = document.getElementById('btnVoz');
   if(S.ouvindo){
@@ -450,9 +783,7 @@ function falar(t){
   u.lang='pt-BR'; u.rate=1.1; speechSynthesis.speak(u);
 }
 function processarVoz(txt){
-  console.log('🎤', txt);
   if(!S.unidadeAtual) return;
-  
   if(txt.includes('finalizar') || txt.includes('concluir')){ finalizarConferencia(); return; }
   if(txt.includes('voltar')){ voltarHome(); return; }
   
@@ -483,10 +814,11 @@ function processarVoz(txt){
   }
 }
 
-/* ==================== ASSINATURA ==================== */
+/* ========== ASSINATURA ========== */
 function finalizarConferencia(){
   document.getElementById('tela-conf').classList.add('hidden');
   document.getElementById('tela-sign').classList.remove('hidden');
+  S.telaAtual = 'assinatura'; /* NOVO */
   setTimeout(()=>{
     initCanvas('sigSainte');
     initCanvas('sigEntrante');
@@ -516,7 +848,14 @@ function limparSig(id){
   c.getContext('2d').clearRect(0,0,c.width,c.height);
 }
 
-/* ==================== PDF + SALVAR ==================== */
+/* ========== VOLTAR PARA HOME ========== */
+function voltarHome(){
+  document.querySelectorAll('#tela-conf, #tela-sign, #tela-ajuda').forEach(t => t.classList.add('hidden'));
+  document.getElementById('tela-home').classList.remove('hidden');
+  S.telaAtual = 'home';
+}
+
+/* ========== PDF + SALVAR ========== */
 async function gerarRelatorio(){
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF();
@@ -568,73 +907,292 @@ async function gerarRelatorio(){
   pdf.text('Sainte: '+document.getElementById('nomeSainte').value, 10, y+37);
   pdf.text('Entrante: '+document.getElementById('nomeEntrante').value, 110, y+37);
   
-  const fname = `passagem_${u.nome}_${Date.now()}.pdf`;
-  pdf.save(fname);
+  pdf.save(`passagem_${u.nome}_${Date.now()}.pdf`);
   
-  // Salvar no Firestore
   let nuvem = false;
   try{
     if(window.fb){
       const reg = {
-        unidade: u.nome,
-        data: new Date().toISOString(),
+        unidade: u.nome, data: new Date().toISOString(),
         sainte: document.getElementById('nomeSainte').value,
         entrante: document.getElementById('nomeEntrante').value,
         obs, resumo: {ok,fal,ava},
-        conferencia: S.conferencia,
-        militarRegistro: S.militar
+        conferencia: S.conferencia, militarRegistro: S.militar
       };
       await fb.setDoc(fb.doc(fb.db,'passagens',`${u.nome}_${Date.now()}`), reg);
       nuvem = true;
     }
   }catch(e){ console.warn('Sync falhou:', e.message); }
   
-  // Sempre salva local também (backup)
   const hist = JSON.parse(localStorage.getItem('historico')||'[]');
   hist.unshift({
-    unidade:u.nome, data:new Date().toISOString(),
+    unidade: u.nome,
+    data: new Date().toISOString(),
     sainte: document.getElementById('nomeSainte').value,
     entrante: document.getElementById('nomeEntrante').value,
-    resumo:{ok,fal,ava}
+    resumo: {ok, fal, ava},
+    obs
   });
-  localStorage.setItem('historico', JSON.stringify(hist.slice(0,50)));
+  localStorage.setItem('historico', JSON.stringify(hist.slice(0, 50)));
   
-  alert(nuvem 
-    ? '✅ PDF gerado e passagem sincronizada com a guarnição!' 
-    : '✅ PDF gerado e salvo localmente.');
+  alert(nuvem ? '✅ PDF gerado e sincronizado com a guarnição!' : '✅ PDF gerado e salvo localmente!');
   voltarHome();
 }
 
-/* ==================== HISTÓRICO ==================== */
+/* ========== HISTÓRICO ========== */
 async function abrirHistorico(){
-  let regs = [];
+  let hist = JSON.parse(localStorage.getItem('historico')||'[]');
+  
   try{
     if(window.fb){
       const q = fb.query(fb.collection(fb.db,'passagens'), fb.orderBy('data','desc'), fb.limit(20));
       const snap = await fb.getDocs(q);
-      snap.forEach(d => regs.push(d.data()));
+      const nuvem = [];
+      snap.forEach(d => nuvem.push(d.data()));
+      if(nuvem.length) hist = nuvem;
     }
-  }catch(e){
-    console.warn('Histórico nuvem falhou:', e.message);
-  }
-  if(!regs.length){
-    regs = JSON.parse(localStorage.getItem('historico')||'[]');
-  }
-  if(!regs.length) return alert('Nenhuma passagem registrada ainda.');
-  const txt = regs.slice(0,10).map(r => 
-    `📅 ${new Date(r.data).toLocaleString('pt-BR')}\n🚒 ${r.unidade}\n👤 ${r.entrante||'?'} ← ${r.sainte||'?'}\n${r.resumo?`✅${r.resumo.ok} ❌${r.resumo.fal} ⚠️${r.resumo.ava}`:''}`
-  ).join('\n\n────────\n\n');
-  alert(txt);
+  }catch(e){ console.warn('Histórico offline:', e.message); }
+  
+  if(!hist.length) return alert('📭 Nenhuma passagem registrada ainda');
+  
+  const lista = hist.slice(0, 20).map((h,i) => {
+    const dt = new Date(h.data).toLocaleString('pt-BR');
+    const r = h.resumo || {ok:0, fal:0, ava:0};
+    return `${i+1}. ${h.unidade} - ${dt}\n   ${h.sainte} → ${h.entrante}\n   ✅${r.ok} ❌${r.fal} ⚠️${r.ava}`;
+  }).join('\n\n');
+  
+  alert('📜 ÚLTIMAS PASSAGENS:\n\n' + lista);
 }
 
-/* ==================== NAV ==================== */
-function voltarHome(){
-  document.getElementById('tela-conf').classList.add('hidden');
-  document.getElementById('tela-sign').classList.add('hidden');
+/* =============================================================
+   ===== NOVO: MÓDULO TOUR DE BOAS-VINDAS =====
+   ============================================================= */
+const TOUR_TELAS = [
+  {ico:'👋', tit:'Bem-vindo, bombeiro!', txt:'Você está no <strong>BombeiroCheck</strong>, o app que vai facilitar sua passagem de serviço. Vou te mostrar tudo em 1 minuto!'},
+  {ico:'👤', tit:'Cadastre seu nome', txt:'Primeiro, preencha seu <strong>nome de guerra</strong> e <strong>matrícula</strong> no card de Identificação. Isso é salvo só no seu celular.'},
+  {ico:'🚒', tit:'Escolha o que conferir', txt:'Toque em <strong>VIATURA</strong> (ABTS, UR, ASF...) ou <strong>SETOR</strong> (SOU, Oficina...). Os itens aparecem agrupados por categoria.'},
+  {ico:'⚙️', tit:'Configure a passagem', txt:'Diga se você é <strong>SAINTE</strong> (saindo) ou <strong>ENTRANTE</strong> (entrando). Modo <strong>Completo</strong> confere item a item; <strong>Rápido</strong> marca tudo OK e você só altera exceções.'},
+  {ico:'✅', tit:'Confira os itens', txt:'Para cada material, marque <strong>✅ OK</strong>, <strong>⚠️ Avariado</strong> ou <strong>❌ Faltando</strong>. Anexe até 3 fotos por item!'},
+  {ico:'🎙️', tit:'Use o comando de voz', txt:'Toque no <strong>🎤 verde</strong> e fale: <em>"Lanterna OK"</em> ou <em>"Cordas faltando"</em>. Mãos livres durante a conferência!'},
+  {ico:'✍️', tit:'Assine e gere o PDF', txt:'Sainte e entrante assinam na tela. O <strong>PDF profissional</strong> é gerado automaticamente e salvo no histórico da guarnição!'},
+  {ico:'🎉', tit:'Tudo pronto!', txt:'O botão <strong>?</strong> azul (canto inferior esquerdo) te dá ajuda em qualquer tela. Bora começar!'}
+];
+let tourPasso = 0;
+
+function iniciarTour(){
+  tourPasso = 0;
+  document.getElementById('tourOverlay').classList.add('ativo');
+  renderTour();
+}
+function renderTour(){
+  const t = TOUR_TELAS[tourPasso];
+  const tot = TOUR_TELAS.length;
+  let bols = '';
+  for(let i=0;i<tot;i++) bols += `<div class="tour-bolinha ${i===tourPasso?'ativa':''}"></div>`;
+  const ult = tourPasso === tot-1;
+  const pri = tourPasso === 0;
+  
+  document.getElementById('tourCard').innerHTML = `
+    <div class="tour-icone">${t.ico}</div>
+    <div class="tour-titulo">${t.tit}</div>
+    <div class="tour-texto">${t.txt}</div>
+    <div class="tour-progresso">${bols}</div>
+    <div class="tour-botoes">
+      ${!pri?'<button class="tour-btn secundario" onclick="anteriorTour()">← Anterior</button>':''}
+      <button class="tour-btn primario" onclick="${ult?'finalizarTour()':'proximoTour()'}">${ult?'🚀 Começar!':'Próximo →'}</button>
+    </div>
+  `;
+}
+function proximoTour(){ if(tourPasso < TOUR_TELAS.length-1){ tourPasso++; renderTour(); } }
+function anteriorTour(){ if(tourPasso > 0){ tourPasso--; renderTour(); } }
+function pularTour(){
+  if(confirm('Pular o tutorial? Você pode revê-lo depois em "📚 Manual & Ajuda".')) finalizarTour();
+}
+function finalizarTour(){
+  document.getElementById('tourOverlay').classList.remove('ativo');
+  localStorage.setItem('tour_completado', 'sim');
+}
+function reverTour(){ fecharAjuda(); iniciarTour(); }
+
+/* =============================================================
+   ===== NOVO: MÓDULO AJUDA =====
+   ============================================================= */
+const TOPICOS_AJUDA = {
+  instalar: {
+    tit: '📲 Como instalar o app',
+    passos: [
+      '<strong>Android:</strong> Abra o link do app no <strong>Chrome</strong> → Menu ⋮ → "Instalar app" ou "Adicionar à tela inicial".',
+      '<strong>iPhone:</strong> Abra no <strong>Safari</strong> (não funciona no Chrome!) → toque em Compartilhar ▢↑ → "Adicionar à Tela de Início".',
+      'Pronto! O ícone do BombeiroCheck aparece junto com seus outros apps.',
+      'Funciona <strong>OFFLINE</strong> depois de instalado — você pode conferir viaturas sem internet!'
+    ]
+  },
+  identificacao: {
+    tit: '👤 Cadastrar identificação',
+    passos: [
+      'Na tela inicial, preencha seu <strong>Nome de guerra</strong> (ex: SOUZA COSTA).',
+      'Preencha sua <strong>Matrícula</strong> completa.',
+      'Toque em <strong>💾 Salvar</strong>. Os dados ficam salvos no celular.',
+      'Você só precisa fazer isso <strong>uma vez</strong>. Da próxima vez, já vem preenchido.'
+    ]
+  },
+  passagem: {
+    tit: '🚒 Fazer passagem de serviço',
+    passos: [
+      'Na tela inicial, toque em <strong>VIATURA</strong> ou <strong>SETOR/SALA</strong>.',
+      'Escolha a categoria e a unidade específica (ex: ABTS-5911).',
+      'Defina seu papel: <strong>🟢 Entrante</strong> ou <strong>🔴 Sainte</strong>.',
+      'Escolha o modo: <strong>📝 Completo</strong> (tudo pendente, você confere) ou <strong>⚡ Rápido</strong> (tudo OK, só marca exceções).',
+      'Toque em <strong>▶️ Começar</strong> e confira os itens.'
+    ]
+  },
+  itens: {
+    tit: '✅ Marcar itens corretamente',
+    passos: [
+      '<strong>✅ OK:</strong> Item presente, na quantidade certa e em bom estado.',
+      '<strong>⚠️ Avariado:</strong> Presente, mas com defeito. <strong>Anexe foto e descreva!</strong>',
+      '<strong>❌ Faltando:</strong> Item ausente. Descreva o motivo se souber.',
+      'Você pode anexar até <strong>3 fotos por item</strong> com defeito.',
+      'Use a <strong>busca 🔍</strong> no topo pra achar item específico rapidamente.',
+      'Toque no <strong>📦 nome do compartimento</strong> pra recolher/expandir os itens.'
+    ]
+  },
+  voz: {
+    tit: '🎙️ Comando por voz',
+    passos: [
+      'Durante a conferência, toque no botão <strong>🎤 verde</strong> no canto inferior direito.',
+      'Aguarde a mensagem "Ouvindo..." e fale claramente.',
+      'Exemplos: <em>"Lanterna OK"</em>, <em>"Cordas faltando"</em>, <em>"Capacete avariado"</em>.',
+      'O app reconhece o item e marca o status automaticamente.',
+      'Diga <strong>"Finalizar"</strong> pra encerrar ou <strong>"Voltar"</strong> pra retornar à home.',
+      'Funciona melhor em <strong>ambiente silencioso</strong>. No iPhone, precisa ser Safari.'
+    ]
+  },
+  foto: {
+    tit: '📸 Anexar fotos',
+    passos: [
+      'Quando marcar um item como <strong>⚠️ Avariado</strong> ou <strong>❌ Faltando</strong>, aparecem opções extras.',
+      'Toque em <strong>📸 Foto</strong> — abre a câmera do celular.',
+      'Tire a foto do defeito ou local do item faltante.',
+      'A foto é <strong>comprimida automaticamente</strong> pra não ocupar espaço.',
+      'Limite de <strong>3 fotos por item</strong>. As fotos vão pro PDF final.'
+    ]
+  },
+  pdf: {
+    tit: '📄 Gerar PDF e assinar',
+    passos: [
+      'Após conferir todos os itens, toque em <strong>✅ Finalizar e Assinar</strong>.',
+      'Adicione <strong>observações gerais</strong> da passagem (opcional).',
+      'O <strong>SAINTE</strong> assina no campo vermelho usando o dedo.',
+      'O <strong>ENTRANTE</strong> assina no campo verde.',
+      'Se errar, toque em <strong>🧹 Limpar</strong> e refaça a assinatura.',
+      'Toque em <strong>📄 Gerar PDF & Salvar</strong> — baixa automático e sincroniza com a guarnição!'
+    ]
+  },
+  historico: {
+    tit: '📜 Ver histórico',
+    passos: [
+      'Na tela inicial, toque em <strong>📜 Ver passagens anteriores</strong>.',
+      'Aparecem as últimas <strong>20 passagens</strong> da guarnição inteira.',
+      'Cada registro mostra: unidade, data, sainte, entrante e resumo (✅❌⚠️).',
+      'Os dados sincronizam automaticamente com toda a guarnição via Firebase.',
+      'Mesmo offline, você vê o histórico local salvo no celular.'
+    ]
+  },
+  faq: {
+    tit: '❓ Perguntas frequentes',
+    faq: [
+      {q:'O app gasta muita internet?', r:'Quase nada! Depois de instalado, tudo funciona offline. Só usa internet pra sincronizar passagens (poucos KB por vez).'},
+      {q:'Funciona em celular antigo?', r:'Sim! Funciona em qualquer Android com Chrome ou iPhone com Safari, mesmo modelos antigos.'},
+      {q:'Sem internet o app funciona?', r:'Funciona normalmente! Você confere, gera PDF e tudo fica salvo. Quando voltar a internet, sincroniza sozinho com a guarnição.'},
+      {q:'Meus dados estão seguros?', r:'Sim. Nome e matrícula ficam só no seu celular. Apenas as passagens (sem dados pessoais sensíveis) sincronizam pela nuvem.'},
+      {q:'Posso usar no computador?', r:'Pode! Basta abrir o link em qualquer navegador (Chrome, Edge, Firefox, Safari) — assinatura funciona com mouse também.'},
+      {q:'Esqueci de marcar um item, posso voltar?', r:'Sim! A qualquer momento durante a conferência você pode rolar a lista e mudar o status de qualquer item.'},
+      {q:'O comando de voz não funciona!', r:'Verifique se autorizou o microfone. No iPhone, precisa ser Safari (não Chrome). Fale claramente em ambiente silencioso.'},
+      {q:'Como vira admin pra importar mapa?', r:'Toque <strong>5 vezes seguidas no logo 🚒 BombeiroCheck</strong> no topo. Vai pedir senha de admin.'},
+      {q:'Posso editar uma passagem antiga?', r:'Não. Por segurança e auditoria, passagens registradas não podem ser alteradas. Faça uma nova conferência se necessário.'},
+      {q:'O PDF não baixou no iPhone, e agora?', r:'No iPhone às vezes o PDF abre em nova aba. Use o botão "Compartilhar" do Safari pra salvar nos Arquivos ou enviar pelo WhatsApp.'}
+    ]
+  }
+};
+
+function abrirAjuda(){
+  document.getElementById('tela-home').classList.add('hidden');
+  document.getElementById('tela-ajuda').classList.remove('hidden');
+  document.getElementById('ajudaCategorias').style.display = 'block';
+  document.getElementById('ajudaConteudo').innerHTML = '';
+  document.getElementById('buscaAjuda').value = '';
+  filtrarAjuda();
+  S.telaAtual = 'ajuda';
+}
+function fecharAjuda(){
+  document.getElementById('tela-ajuda').classList.add('hidden');
   document.getElementById('tela-home').classList.remove('hidden');
+  S.telaAtual = 'home';
+}
+function abrirTopico(key){
+  const t = TOPICOS_AJUDA[key];
+  if(!t) return;
+  document.getElementById('ajudaCategorias').style.display = 'none';
+  
+  let html = `<button class="sec" onclick="voltarCategorias()" style="margin-bottom:10px">← Categorias</button>`;
+  html += `<h3 style="color:#e74c3c;margin-bottom:14px;font-size:16px">${t.tit}</h3>`;
+  
+  if(t.passos){
+    t.passos.forEach((p,i) => {
+      html += `<div class="ajuda-passo"><div class="ajuda-passo-num">${i+1}</div><div class="ajuda-passo-txt">${p}</div></div>`;
+    });
+  }
+  if(t.faq){
+    t.faq.forEach(item => {
+      html += `<div class="faq-item" onclick="this.classList.toggle('aberto')"><div class="faq-q">${item.q}</div><div class="faq-r">${item.r}</div></div>`;
+    });
+  }
+  document.getElementById('ajudaConteudo').innerHTML = html;
+}
+function voltarCategorias(){
+  document.getElementById('ajudaCategorias').style.display = 'block';
+  document.getElementById('ajudaConteudo').innerHTML = '';
+}
+function filtrarAjuda(){
+  const b = document.getElementById('buscaAjuda').value.toLowerCase();
+  document.querySelectorAll('.ajuda-cat').forEach(c => {
+    c.style.display = c.textContent.toLowerCase().includes(b) ? '' : 'none';
+  });
 }
 
-Object.assign(window, {salvarMilitar,importarMapa,setPapel,setModo,iniciarConferencia,setStatus,setObs,tirarFoto,toggleVoz,finalizarConferencia,limparSig,gerarRelatorio,abrirHistorico,voltarHome,renderItens});
+/* =============================================================
+   ===== NOVO: BOTÃO HELP CONTEXTUAL =====
+   ============================================================= */
+const DICAS_CTX = {
+  home: {tit:'💡 Tela inicial', txt:'Cadastre seu nome em <b>Identificação</b>, escolha <b>VIATURA</b> ou <b>SETOR</b> pra começar uma passagem. Toque em <b>📚 Manual & Ajuda</b> pra ver tutoriais.'},
+  selecao: {tit:'💡 Selecionando unidade', txt:'As unidades estão agrupadas por categoria (Combate a Incêndio, APH, etc). Cada card mostra quantos itens tem pra conferir.'},
+  config: {tit:'💡 Configurando passagem', txt:'<b>Modo Completo:</b> confere item a item.<br><b>Modo Rápido:</b> tudo OK por padrão, só marca exceções.<br>Escolha seu papel (Sainte/Entrante).'},
+  conferencia: {tit:'💡 Conferindo itens', txt:'Marque ✅ OK, ⚠️ Avariado ou ❌ Faltando. Use o 🎤 microfone pra falar em vez de tocar! Anexe fotos em itens com defeito.'},
+  assinatura: {tit:'💡 Assinando', txt:'Use o dedo pra assinar nos campos. Se errar, toque em "Limpar". Os dois (sainte e entrante) precisam assinar pra gerar o PDF.'},
+  ajuda: {tit:'💡 Central de Ajuda', txt:'Toque em qualquer categoria pra ver o passo a passo. Use a busca pra achar rápido. Tem FAQ com as dúvidas mais comuns!'}
+};
+
+function toggleDica(){
+  const tt = document.getElementById('dicaTooltip');
+  const d = DICAS_CTX[S.telaAtual] || DICAS_CTX.home;
+  document.getElementById('dicaTit').innerHTML = d.tit;
+  document.getElementById('dicaTxt').innerHTML = d.txt;
+  tt.classList.toggle('ativa');
+  if(tt.classList.contains('ativa')){
+    setTimeout(() => tt.classList.remove('ativa'), 10000);
+  }
+}
+function fecharDica(){
+  document.getElementById('dicaTooltip').classList.remove('ativa');
+}
+document.addEventListener('click', (e) => {
+  const tt = document.getElementById('dicaTooltip');
+  const btn = document.getElementById('btnHelp');
+  if(tt && !tt.contains(e.target) && e.target !== btn){
+    tt.classList.remove('ativa');
+  }
+});
 </script>
 
 </body>
