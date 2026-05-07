@@ -74,7 +74,7 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
 .aviso-vazio{text-align:center;padding:30px 14px;color:#888}
 .aviso-vazio .ico-big{font-size:48px;display:block;margin-bottom:10px}
 
-/* ===== NOVO: TOUR DE BOAS-VINDAS ===== */
+/* TOUR DE BOAS-VINDAS */
 .tour-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease}
 .tour-overlay.ativo{display:flex}
 .tour-card{background:linear-gradient(135deg,#2a2a2a,#1f1f1f);border-radius:16px;padding:28px 22px;max-width:400px;width:100%;color:#fff;text-align:center;box-shadow:0 20px 60px rgba(192,57,43,.4);border:2px solid #c0392b;position:relative}
@@ -93,7 +93,7 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
 .tour-btn.secundario:hover{background:#465a70}
 .tour-pular{position:absolute;top:-30px;right:0;background:transparent;border:none;color:#999;cursor:pointer;font-size:12px;text-decoration:underline;width:auto;padding:4px;margin:0}
 
-/* ===== NOVO: TELA DE AJUDA ===== */
+/* TELA DE AJUDA */
 .ajuda-busca{margin-bottom:12px}
 .ajuda-cat{background:#1f1f1f;border-radius:10px;padding:14px;margin-bottom:8px;border-left:4px solid #c0392b;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:12px}
 .ajuda-cat:hover{background:#2a2020;transform:translateX(3px)}
@@ -112,7 +112,7 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
 .faq-r{padding:0 12px;max-height:0;overflow:hidden;transition:all .3s;font-size:12px;color:#bbb;line-height:1.5}
 .faq-item.aberto .faq-r{padding:0 12px 12px;max-height:400px}
 
-/* ===== NOVO: BOTÃO HELP FLUTUANTE ===== */
+/* BOTÃO HELP FLUTUANTE */
 .fab-help{position:fixed;bottom:20px;left:20px;width:48px;height:48px;border-radius:50%;background:#3498db;font-size:22px;font-weight:700;box-shadow:0 4px 15px rgba(52,152,219,.5);z-index:200;padding:0;color:#fff;border:none;cursor:pointer}
 .fab-help:hover{background:#2980b9}
 .dica-tooltip{position:fixed;bottom:78px;left:20px;max-width:280px;background:#2a2a2a;color:#fff;padding:14px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:201;display:none;border:2px solid #3498db;animation:slideUp .3s ease}
@@ -121,9 +121,20 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
 .dica-txt{font-size:12px;line-height:1.5;color:#ddd}
 .dica-fechar{position:absolute;top:6px;right:8px;background:none;border:none;color:#888;cursor:pointer;font-size:16px;width:auto;padding:2px;margin:0}
 
+/* ===== NOVO: BANNER DE ATUALIZAÇÃO ===== */
+.update-banner{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff;padding:14px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(39,174,96,.6);z-index:9998;max-width:92%;width:340px;text-align:center;display:none;animation:slideUp .4s ease}
+.update-banner.ativo{display:block}
+.update-tit{font-size:14px;font-weight:700;margin-bottom:10px}
+.update-btns{display:flex;gap:8px;justify-content:center}
+.update-btns button{width:auto;padding:8px 16px;font-size:13px;font-weight:700;margin:0;border-radius:8px;border:none;cursor:pointer}
+.update-btn-primary{background:#fff;color:#27ae60}
+.update-btn-primary:hover{background:#f0f0f0;transform:scale(1.05)}
+.update-btn-secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4) !important}
+.update-btn-secondary:hover{background:rgba(255,255,255,.15)}
+
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes tourBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes slideUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translate(-50%,15px)}to{opacity:1;transform:translate(-50%,0)}}
 </style>
 </head>
 <body>
@@ -132,7 +143,7 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
   <h1 id="logoApp">🚒 BombeiroCheck <span id="onlineBadge" class="online-badge">●</span></h1>
 </header>
 
-<!-- ===== NOVO: TOUR DE BOAS-VINDAS ===== -->
+<!-- TOUR DE BOAS-VINDAS -->
 <div class="tour-overlay" id="tourOverlay">
   <div style="position:relative;width:100%;max-width:400px">
     <button class="tour-pular" onclick="pularTour()">Pular tutorial ✕</button>
@@ -140,12 +151,21 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
   </div>
 </div>
 
-<!-- ===== NOVO: BOTÃO HELP FLUTUANTE ===== -->
+<!-- BOTÃO HELP FLUTUANTE -->
 <button class="fab-help" id="btnHelp" onclick="toggleDica()" title="Ajuda">?</button>
 <div class="dica-tooltip" id="dicaTooltip">
   <button class="dica-fechar" onclick="fecharDica()">✕</button>
   <div class="dica-tit" id="dicaTit">💡 Dica</div>
   <div class="dica-txt" id="dicaTxt"></div>
+</div>
+
+<!-- ===== NOVO: BANNER DE ATUALIZAÇÃO ===== -->
+<div class="update-banner" id="bannerUpdate">
+  <div class="update-tit">🎉 Nova versão disponível!</div>
+  <div class="update-btns">
+    <button class="update-btn-primary" onclick="aplicarUpdate()">🔄 Atualizar agora</button>
+    <button class="update-btn-secondary" onclick="document.getElementById('bannerUpdate').classList.remove('ativo')">Depois</button>
+  </div>
 </div>
 
 <div class="container">
@@ -159,7 +179,6 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
       <button onclick="salvarMilitar()">💾 Salvar</button>
     </div>
 
-    <!-- ÁREA ADMIN (escondida por padrão) -->
     <div class="card hidden" id="painelAdmin">
       <h2>🔧 Área Admin <span class="admin-tag">RESTRITO</span></h2>
       <button class="sec" onclick="importarMapa()">📥 Importar mapa-carga.json</button>
@@ -171,7 +190,6 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
     <div class="card">
       <h2>📋 Iniciar Conferência</h2>
       
-      <!-- ETAPA 1: Tipo -->
       <div id="etapa-tipo">
         <label style="font-size:13px;color:#aaa;display:block;margin-bottom:8px">O que você vai conferir?</label>
         <div class="tipo-cards">
@@ -193,13 +211,11 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
         </div>
       </div>
       
-      <!-- ETAPA 2: Escolher unidade -->
       <div id="etapa-unidade" class="hidden">
         <button class="sec" onclick="voltarTipo()" style="margin-bottom:10px">← Voltar</button>
         <div id="listaUnidades"></div>
       </div>
       
-      <!-- ETAPA 3: Configurar -->
       <div id="etapa-config" class="hidden">
         <button class="sec" onclick="voltarUnidade()" style="margin-bottom:10px">← Voltar</button>
         <div style="background:#1a1a1a;padding:14px;border-radius:8px;margin-bottom:12px;text-align:center">
@@ -228,7 +244,6 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
       <button class="sec" onclick="abrirHistorico()">📜 Ver passagens anteriores</button>
     </div>
 
-    <!-- ===== NOVO: CARD DE AJUDA ===== -->
     <div class="card">
       <h2>📚 Manual & Ajuda</h2>
       <button class="sec" onclick="abrirAjuda()" style="background:#27ae60">📖 Como usar o app</button>
@@ -268,7 +283,7 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
     </div>
   </div>
 
-  <!-- ===== NOVO: TELA AJUDA ===== -->
+  <!-- TELA AJUDA -->
   <div id="tela-ajuda" class="hidden">
     <div class="card">
       <button class="sec" onclick="fecharAjuda()" style="margin-bottom:10px">← Voltar</button>
@@ -357,13 +372,51 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
 
 <button class="fab-voz" id="btnVoz" onclick="toggleVoz()" title="Comando de voz">🎤</button>
 
+<!-- ===== NOVO: SERVICE WORKER COM AUTO-UPDATE ===== -->
 <script>
+let swRegistro = null;
+
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log('✅ App instalável'))
+      .then(reg => {
+        console.log('✅ Service Worker registrado');
+        swRegistro = reg;
+        
+        // Verifica updates a cada 30 segundos
+        setInterval(() => reg.update().catch(()=>{}), 30000);
+        
+        // Detecta nova versão pronta
+        reg.addEventListener('updatefound', () => {
+          const novoSW = reg.installing;
+          if(!novoSW) return;
+          
+          novoSW.addEventListener('statechange', () => {
+            if(novoSW.state === 'installed' && navigator.serviceWorker.controller){
+              console.log('🆕 Nova versão disponível!');
+              document.getElementById('bannerUpdate').classList.add('ativo');
+            }
+          });
+        });
+      })
       .catch(e => console.warn('SW falhou:', e));
+    
+    // Recarrega quando o novo SW assume o controle
+    let recarregando = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if(recarregando) return;
+      recarregando = true;
+      window.location.reload();
+    });
   });
+}
+
+function aplicarUpdate(){
+  if(swRegistro && swRegistro.waiting){
+    swRegistro.waiting.postMessage('SKIP_WAITING');
+  } else {
+    window.location.reload();
+  }
 }
 </script>
 
@@ -407,7 +460,6 @@ window.fb = { db, collection, doc, setDoc, getDoc, getDocs, query, orderBy, limi
 /* ========== CONFIG ========== */
 const SENHA_ADMIN = "SdSouzaCosta";
 
-/* Categorização automática por nome da unidade */
 function categorizarUnidade(nome, tipo){
   const n = nome.toUpperCase();
   if(tipo === 'VIATURA'){
@@ -442,7 +494,6 @@ function iconeUnidade(nome, tipo){
   }
 }
 
-/* ========== ESTADO ========== */
 const S = {
   militar: JSON.parse(localStorage.getItem('militar')||'null'),
   mapa: JSON.parse(localStorage.getItem('mapa')||'null'),
@@ -455,10 +506,9 @@ const S = {
   ouvindo: false,
   cliquesLogo: 0,
   timerLogo: null,
-  telaAtual: 'home' /* ===== NOVO ===== */
+  telaAtual: 'home'
 };
 
-/* ========== INIT ========== */
 window.addEventListener('load', () => {
   if (S.militar) {
     document.getElementById('meuNome').value = S.militar.nome;
@@ -469,13 +519,11 @@ window.addEventListener('load', () => {
   initAdminLogo();
   atualizarContadores();
   
-  /* ===== NOVO: Tour automático na 1ª abertura ===== */
   if(!localStorage.getItem('tour_completado')){
     setTimeout(() => iniciarTour(), 1000);
   }
 });
 
-/* ========== ADMIN ESCONDIDO (5 cliques no logo) ========== */
 function initAdminLogo(){
   document.getElementById('logoApp').addEventListener('click', () => {
     S.cliquesLogo++;
@@ -498,7 +546,6 @@ function fecharAdmin(){
   document.getElementById('painelAdmin').classList.add('hidden');
 }
 
-/* ========== MILITAR ========== */
 function salvarMilitar(){
   const nome = document.getElementById('meuNome').value.trim();
   const mat = document.getElementById('minhaMat').value.trim();
@@ -508,7 +555,6 @@ function salvarMilitar(){
   alert('✅ Salvo!');
 }
 
-/* ========== MAPA ========== */
 function importarMapa(){ document.getElementById('fileMapa').click(); }
 
 document.getElementById('fileMapa').addEventListener('change', async (e)=>{
@@ -565,7 +611,6 @@ function atualizarContadores(){
   document.getElementById('qtdSetores').textContent = `${s} unidade${s!==1?'s':''}`;
 }
 
-/* ========== NAVEGAÇÃO POR ETAPAS ========== */
 function selecionarTipo(tipo){
   if(!S.mapa) return alert('Aguarde o mapa carregar');
   S.tipoEscolhido = tipo;
@@ -606,7 +651,7 @@ function selecionarTipo(tipo){
   
   document.getElementById('etapa-tipo').classList.add('hidden');
   document.getElementById('etapa-unidade').classList.remove('hidden');
-  S.telaAtual = 'selecao'; /* NOVO */
+  S.telaAtual = 'selecao';
 }
 
 function selecionarUnidade(nome){
@@ -614,21 +659,20 @@ function selecionarUnidade(nome){
   document.getElementById('unidadeEscolhida').textContent = `${iconeUnidade(nome, S.tipoEscolhido)} ${nome}`;
   document.getElementById('etapa-unidade').classList.add('hidden');
   document.getElementById('etapa-config').classList.remove('hidden');
-  S.telaAtual = 'config'; /* NOVO */
+  S.telaAtual = 'config';
 }
 
 function voltarTipo(){
   document.getElementById('etapa-unidade').classList.add('hidden');
   document.getElementById('etapa-tipo').classList.remove('hidden');
-  S.telaAtual = 'home'; /* NOVO */
+  S.telaAtual = 'home';
 }
 function voltarUnidade(){
   document.getElementById('etapa-config').classList.add('hidden');
   document.getElementById('etapa-unidade').classList.remove('hidden');
-  S.telaAtual = 'selecao'; /* NOVO */
+  S.telaAtual = 'selecao';
 }
 
-/* ========== TABS ========== */
 function setPapel(btn, p){
   S.papel = p;
   btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
@@ -640,7 +684,6 @@ function setModo(btn, m){
   btn.classList.add('active');
 }
 
-/* ========== INICIAR CONFERÊNCIA ========== */
 function iniciarConferencia(){
   if(!S.militar) return alert('Cadastre seu nome primeiro');
   if(!S.unidadeAtual) return alert('Selecione uma unidade');
@@ -656,11 +699,10 @@ function iniciarConferencia(){
   document.getElementById('tituloConf').textContent = '📋 ' + S.unidadeAtual.nome;
   document.getElementById('tela-home').classList.add('hidden');
   document.getElementById('tela-conf').classList.remove('hidden');
-  S.telaAtual = 'conferencia'; /* NOVO */
+  S.telaAtual = 'conferencia';
   renderItens();
 }
 
-/* ========== RENDER ITENS ========== */
 function renderItens(){
   const busca = document.getElementById('busca').value.toLowerCase();
   const cont = document.getElementById('listaItens');
@@ -724,7 +766,6 @@ function renderItens(){
 function setStatus(id, st){ S.conferencia[id].status = st; renderItens(); }
 function setObs(id, v){ S.conferencia[id].obs = v; }
 
-/* ========== FOTO ========== */
 function tirarFoto(id){
   const inp = document.createElement('input');
   inp.type='file'; inp.accept='image/*'; inp.capture='environment';
@@ -750,7 +791,6 @@ function tirarFoto(id){
   inp.click();
 }
 
-/* ========== VOZ ========== */
 function initVoz(){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR){ document.getElementById('btnVoz').style.display='none'; return; }
@@ -814,11 +854,10 @@ function processarVoz(txt){
   }
 }
 
-/* ========== ASSINATURA ========== */
 function finalizarConferencia(){
   document.getElementById('tela-conf').classList.add('hidden');
   document.getElementById('tela-sign').classList.remove('hidden');
-  S.telaAtual = 'assinatura'; /* NOVO */
+  S.telaAtual = 'assinatura';
   setTimeout(()=>{
     initCanvas('sigSainte');
     initCanvas('sigEntrante');
@@ -848,14 +887,12 @@ function limparSig(id){
   c.getContext('2d').clearRect(0,0,c.width,c.height);
 }
 
-/* ========== VOLTAR PARA HOME ========== */
 function voltarHome(){
   document.querySelectorAll('#tela-conf, #tela-sign, #tela-ajuda').forEach(t => t.classList.add('hidden'));
   document.getElementById('tela-home').classList.remove('hidden');
   S.telaAtual = 'home';
 }
 
-/* ========== PDF + SALVAR ========== */
 async function gerarRelatorio(){
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF();
@@ -939,7 +976,6 @@ async function gerarRelatorio(){
   voltarHome();
 }
 
-/* ========== HISTÓRICO ========== */
 async function abrirHistorico(){
   let hist = JSON.parse(localStorage.getItem('historico')||'[]');
   
@@ -964,9 +1000,7 @@ async function abrirHistorico(){
   alert('📜 ÚLTIMAS PASSAGENS:\n\n' + lista);
 }
 
-/* =============================================================
-   ===== NOVO: MÓDULO TOUR DE BOAS-VINDAS =====
-   ============================================================= */
+/* ===== TOUR DE BOAS-VINDAS ===== */
 const TOUR_TELAS = [
   {ico:'👋', tit:'Bem-vindo, bombeiro!', txt:'Você está no <strong>BombeiroCheck</strong>, o app que vai facilitar sua passagem de serviço. Vou te mostrar tudo em 1 minuto!'},
   {ico:'👤', tit:'Cadastre seu nome', txt:'Primeiro, preencha seu <strong>nome de guerra</strong> e <strong>matrícula</strong> no card de Identificação. Isso é salvo só no seu celular.'},
@@ -1014,9 +1048,7 @@ function finalizarTour(){
 }
 function reverTour(){ fecharAjuda(); iniciarTour(); }
 
-/* =============================================================
-   ===== NOVO: MÓDULO AJUDA =====
-   ============================================================= */
+/* ===== MÓDULO AJUDA ===== */
 const TOPICOS_AJUDA = {
   instalar: {
     tit: '📲 Como instalar o app',
@@ -1161,9 +1193,7 @@ function filtrarAjuda(){
   });
 }
 
-/* =============================================================
-   ===== NOVO: BOTÃO HELP CONTEXTUAL =====
-   ============================================================= */
+/* ===== BOTÃO HELP CONTEXTUAL ===== */
 const DICAS_CTX = {
   home: {tit:'💡 Tela inicial', txt:'Cadastre seu nome em <b>Identificação</b>, escolha <b>VIATURA</b> ou <b>SETOR</b> pra começar uma passagem. Toque em <b>📚 Manual & Ajuda</b> pra ver tutoriais.'},
   selecao: {tit:'💡 Selecionando unidade', txt:'As unidades estão agrupadas por categoria (Combate a Incêndio, APH, etc). Cada card mostra quantos itens tem pra conferir.'},
