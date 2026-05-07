@@ -899,6 +899,7 @@ async function gerarRelatorio(){
   const u = S.unidadeAtual;
   const data = new Date().toLocaleString('pt-BR');
   
+  // ===== CABEÇALHO =====
   pdf.setFillColor(192,57,43); pdf.rect(0,0,210,25,'F');
   pdf.setTextColor(255); pdf.setFontSize(16);
   pdf.text('PASSAGEM DE SERVICO - '+u.nome, 10, 16);
@@ -909,43 +910,121 @@ async function gerarRelatorio(){
   pdf.text(`Sainte: ${document.getElementById('nomeSainte').value}`, 10, y); y+=6;
   pdf.text(`Entrante: ${document.getElementById('nomeEntrante').value}`, 10, y); y+=8;
   
-  let ok=0,fal=0,ava=0;
+  // ===== RESUMO =====
+  let ok=0,fal=0,ava=0,totalFotos=0;
   Object.values(S.conferencia).forEach(c=>{
     if(c.status==='OK')ok++; else if(c.status==='FAL')fal++; else if(c.status==='AVA')ava++;
+    if(c.fotos) totalFotos += c.fotos.length;
   });
   pdf.setFontSize(11);
   pdf.text(`Resumo: ${ok} OK | ${fal} Faltando | ${ava} Avariado`, 10, y); y+=8;
   
-  pdf.setFontSize(12); pdf.text('ITENS COM OCORRENCIA:', 10, y); y+=6;
+  // ===== ITENS COM OCORRÊNCIA =====
+  pdf.setFontSize(12); 
+  pdf.setFont(undefined, 'bold');
+  pdf.text('ITENS COM OCORRENCIA:', 10, y); y+=7;
+  pdf.setFont(undefined, 'normal');
   pdf.setFontSize(9);
+  
   Object.entries(u.compartimentos).forEach(([comp,itens])=>{
     itens.forEach(it=>{
       const c = S.conferencia[it.id];
       if(c.status==='FAL' || c.status==='AVA'){
-        if(y>270){ pdf.addPage(); y=20; }
-        const ico = c.status==='FAL'?'[FALTANDO]':'[AVARIADO]';
-        pdf.text(`${ico} ${comp} - ${it.material}`, 10, y); y+=5;
-        if(c.obs){ pdf.text(`  Obs: ${c.obs}`, 10, y); y+=5; }
+        // Verifica se precisa quebrar página (espaço pra texto + foto)
+        const espacoNecessario = c.fotos && c.fotos.length > 0 ? 60 : 12;
+        if(y > 270 - espacoNecessario){ pdf.addPage(); y = 20; }
+        
+        // Status colorido
+        if(c.status==='FAL'){
+          pdf.setTextColor(231,76,60); // vermelho
+          pdf.text(`[FALTANDO] ${comp} - ${it.material}`, 10, y);
+        } else {
+          pdf.setTextColor(243,156,18); // laranja
+          pdf.text(`[AVARIADO] ${comp} - ${it.material}`, 10, y);
+        }
+        pdf.setTextColor(0); // volta pro preto
+        y += 5;
+        
+        // Observação
+        if(c.obs){ 
+          const linhasObs = pdf.splitTextToSize(`  Obs: ${c.obs}`, 180);
+          pdf.text(linhasObs, 10, y); 
+          y += linhasObs.length * 4 + 1;
+        }
+        
+        // ===== ✨ AQUI É A CORREÇÃO: ADICIONA AS FOTOS! =====
+        if(c.fotos && c.fotos.length > 0){
+          let xFoto = 12;
+          const tamFoto = 50; // tamanho da foto no PDF (mm)
+          const espacamento = 5;
+          
+          // Verifica espaço vertical pra fotos
+          if(y + tamFoto + 5 > 280){ pdf.addPage(); y = 20; }
+          
+          c.fotos.forEach((foto, idx) => {
+            try {
+              // Se não cabe horizontalmente, quebra linha
+              if(xFoto + tamFoto > 200){
+                xFoto = 12;
+                y += tamFoto + espacamento;
+                if(y + tamFoto > 280){ pdf.addPage(); y = 20; }
+              }
+              pdf.addImage(foto, 'JPEG', xFoto, y, tamFoto, tamFoto);
+              xFoto += tamFoto + espacamento;
+            } catch(err){ 
+              console.warn('Erro ao adicionar foto:', err); 
+            }
+          });
+          y += tamFoto + 6; // espaço após as fotos
+        }
+        
+        y += 2; // espaço entre itens
       }
     });
   });
   
+  // ===== OBSERVAÇÕES GERAIS =====
   const obs = document.getElementById('obsGeral').value;
-  if(obs){ y+=4; pdf.setFontSize(11); pdf.text('Observacoes: '+obs, 10, y, {maxWidth:190}); y+=10; }
+  if(obs){ 
+    if(y > 250){ pdf.addPage(); y = 20; }
+    y += 4; 
+    pdf.setFontSize(11); 
+    pdf.setFont(undefined, 'bold');
+    pdf.text('Observacoes gerais:', 10, y); y += 6;
+    pdf.setFont(undefined, 'normal');
+    pdf.setFontSize(10);
+    const linhasObs = pdf.splitTextToSize(obs, 190);
+    pdf.text(linhasObs, 10, y);
+    y += linhasObs.length * 5 + 4;
+  }
   
-  if(y>240){ pdf.addPage(); y=20; }
-  y+=10;
+  // ===== ASSINATURAS =====
+  if(y > 230){ pdf.addPage(); y = 20; }
+  y += 10;
+  
   try {
     pdf.addImage(document.getElementById('sigSainte').toDataURL(), 'PNG', 10, y, 80, 30);
     pdf.addImage(document.getElementById('sigEntrante').toDataURL(), 'PNG', 110, y, 80, 30);
-  } catch(e){}
-  pdf.line(10,y+32,90,y+32); pdf.line(110,y+32,190,y+32);
+  } catch(e){ console.warn('Erro nas assinaturas:', e); }
+  
+  pdf.line(10, y+32, 90, y+32); 
+  pdf.line(110, y+32, 190, y+32);
   pdf.setFontSize(9);
   pdf.text('Sainte: '+document.getElementById('nomeSainte').value, 10, y+37);
   pdf.text('Entrante: '+document.getElementById('nomeEntrante').value, 110, y+37);
   
+  // ===== RODAPÉ COM TOTAL DE FOTOS =====
+  if(totalFotos > 0){
+    pdf.setFontSize(8);
+    pdf.setTextColor(150);
+    pdf.text(`📸 ${totalFotos} foto(s) anexada(s) ao relatorio`, 10, y+45);
+    pdf.setTextColor(0);
+  }
+  
+  // ===== SALVAR =====
   pdf.save(`passagem_${u.nome}_${Date.now()}.pdf`);
   
+  // ===== SYNC FIREBASE =====
   let nuvem = false;
   try{
     if(window.fb){
@@ -961,6 +1040,7 @@ async function gerarRelatorio(){
     }
   }catch(e){ console.warn('Sync falhou:', e.message); }
   
+  // ===== HISTÓRICO LOCAL =====
   const hist = JSON.parse(localStorage.getItem('historico')||'[]');
   hist.unshift({
     unidade: u.nome,
@@ -975,6 +1055,7 @@ async function gerarRelatorio(){
   alert(nuvem ? '✅ PDF gerado e sincronizado com a guarnição!' : '✅ PDF gerado e salvo localmente!');
   voltarHome();
 }
+
 
 async function abrirHistorico(){
   let hist = JSON.parse(localStorage.getItem('historico')||'[]');
