@@ -132,6 +132,43 @@ canvas{background:#fff;border-radius:8px;width:100%;height:120px;touch-action:no
 .update-btn-secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4) !important}
 .update-btn-secondary:hover{background:rgba(255,255,255,.15)}
 
+/* ===== RODAPÉ PADRÃO BBZU ===== */
+.footer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 28px auto 20px;
+  padding: 18px 24px;
+  text-align: center;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #172554;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6;
+
+  background: transparent;
+}
+
+.footer p {
+  margin: 4px 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+.footer p:first-child {
+  font-weight: 700;
+}
+
+.footer-dev {
+  margin-top: 10px !important;
+  font-size: 12px !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+  
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes tourBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes slideUp{from{opacity:0;transform:translate(-50%,15px)}to{opacity:1;transform:translate(-50%,0)}}
@@ -1306,5 +1343,14 @@ document.addEventListener('click', (e) => {
 });
 </script>
 
+<footer class="footer">
+  <p><strong>© 2026 BBZU - Bombeiro Bizurado</strong></p>
+  <p>Sistema de Recebimento de Viaturas v2.6</p>
+  <p class="footer-dev">
+    Desenvolvedor do App: Gabriel Souza Costa Ferreira &nbsp;|&nbsp; N° BM: 184.216-0
+  </p>
+</footer>
+  
+  
 </body>
 </html>
