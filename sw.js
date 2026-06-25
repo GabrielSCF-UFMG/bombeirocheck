@@ -1,8 +1,7 @@
 // ============================================
-// BombeiroCheck Service Worker v3.0
-// 🔄 Mude o número abaixo a cada nova release!
+// BombeiroCheck Service Worker v3.1
 // ============================================
-const VERSAO = 'v3.0';
+const VERSAO = 'v3.1';
 const CACHE = `bombeirocheck-${VERSAO}`;
 
 const ARQUIVOS = [
