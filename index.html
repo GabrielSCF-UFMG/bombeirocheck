@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
+    <script>
+        const APP_VERSION = '3.2';
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#8b0000">
-    <title>🚒 BombeiroCheck</title>
+    <title>🚒 Bombeiro Check</title>
     <link rel="manifest" href="./manifest.json">
     <link rel="apple-touch-icon" href="./icon-192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1275,10 +1281,10 @@
         }
 
         <button id="btnVoltarLista"
-            class="sec"
-            style="display:none"
-            onclick="voltarParaListaHistorico()" >
-            ← Lista
+        class="sec"
+        style="display:none"
+        onclick="voltarParaListaHistorico()" >
+        ← Lista
         </button >
 
 
@@ -1319,8 +1325,6 @@
                 margin-bottom: 12px;
             }
         }
-
-
     </style>
 </head>
 
@@ -1331,21 +1335,9 @@
     ════════════════════════════════════════════════ -->
     <header>
         <h1 id="logoApp">
-            <svg class="logo-brasao" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-                <path d="M40 6 L68 18 L68 44 C68 60 40 74 40 74 C40 74 12 60 12 44 L12 18 Z"
-                      fill="url(#shieldGrad)" stroke="#ff6b6b" stroke-width="1.5" />
-                <defs>
-                    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#8b0000" />
-                        <stop offset="100%" stop-color="#c0392b" />
-                    </linearGradient>
-                </defs>
-                <rect x="34" y="16" width="12" height="36" rx="2" fill="#fff" opacity=".9" />
-                <rect x="22" y="28" width="36" height="12" rx="2" fill="#fff" opacity=".9" />
-                <circle cx="40" cy="34" r="5" fill="#f39c12" />
-            </svg>
+            <img src="brasao-cbmmg.png" alt="Brasão CBMMG" class="logo-brasao" />
             <span class="logo-texts">
-                <span class="logo-title">BOMBEIROCHECK</span>
+                <span class="logo-title">BOMBEIRO CHECK</span>
                 <span class="logo-subtitle">Sistema de Passagem de Serviço</span>
             </span>
             <span id="onlineBadge" class="online-badge">Online</span>
@@ -1885,10 +1877,10 @@
                     const card = document.createElement('div');
                     card.className = 'unid-card';
                     card.innerHTML = `
-                    <span class="ico-mini">${iconeUnidade(u.nome, tipo)}</span>
-                    ${u.nome}
-                    <div class="qtd-itens">${totalItens} itens</div>
-                  `;
+                            <span class="ico-mini">${iconeUnidade(u.nome, tipo)}</span>
+                            ${u.nome}
+                            <div class="qtd-itens">${totalItens} itens</div>
+                          `;
                     card.onclick = () => selecionarUnidade(u.nome);
                     grid.appendChild(card);
                 });
@@ -2002,21 +1994,21 @@
                     const div = document.createElement('div');
                     div.className = 'item ' + (c.status === 'OK' ? 'ok' : c.status === 'FAL' ? 'fal' : c.status === 'AVA' ? 'ava' : '');
                     div.innerHTML = `
-                    <h4>${it.material} <span style="float:right;color:#c0392b">×${it.qtd}</span></h4>
-                    ${it.patrimonio ? `<small>🏷️ Patrim: ${it.patrimonio}</small>` : ''}
-                    ${it.serie ? `<small>🔢 Série: ${it.serie}</small>` : ''}
-                    ${it.obs ? `<small>📝 ${it.obs}</small>` : ''}
-                    <div class="row">
-                      <button class="ok"   onclick="setStatus('${it.id}','OK')">✅ OK</button>
-                      <button class="warn" onclick="setStatus('${it.id}','AVA')">⚠️ Avariado</button>
-                      <button             onclick="setStatus('${it.id}','FAL')">❌ Faltando</button>
-                    </div>
-                    ${c.status === 'FAL' || c.status === 'AVA' ? `
-                      <textarea placeholder="Observação..." onchange="setObs('${it.id}',this.value)">${c.obs}</textarea>
-                      <div class="row"><button class="sec" onclick="tirarFoto('${it.id}')">📸 Foto</button></div>
-                      <div>${c.fotos.map(f => `<img class="photo-thumb" src="${f}">`).join('')}</div>
-                    ` : ''}
-                  `;
+                            <h4>${it.material} <span style="float:right;color:#c0392b">×${it.qtd}</span></h4>
+                            ${it.patrimonio ? `<small>🏷️ Patrim: ${it.patrimonio}</small>` : ''}
+                            ${it.serie ? `<small>🔢 Série: ${it.serie}</small>` : ''}
+                            ${it.obs ? `<small>📝 ${it.obs}</small>` : ''}
+                            <div class="row">
+                              <button class="ok"   onclick="setStatus('${it.id}','OK')">✅ OK</button>
+                              <button class="warn" onclick="setStatus('${it.id}','AVA')">⚠️ Avariado</button>
+                              <button             onclick="setStatus('${it.id}','FAL')">❌ Faltando</button>
+                            </div>
+                            ${c.status === 'FAL' || c.status === 'AVA' ? `
+                              <textarea placeholder="Observação..." onchange="setObs('${it.id}',this.value)">${c.obs}</textarea>
+                              <div class="row"><button class="sec" onclick="tirarFoto('${it.id}')">📸 Foto</button></div>
+                              <div>${c.fotos.map(f => `<img class="photo-thumb" src="${f}">`).join('')}</div>
+                            ` : ''}
+                          `;
                     wrap.appendChild(div);
                 });
                 cont.appendChild(wrap);
@@ -2024,13 +2016,13 @@
 
             // ✅ Status bar com hodômetro
             document.getElementById('statusBar').innerHTML = `
-                ${S.hodometro ? `<span class="stat">🔢 <b>${Number(S.hodometro).toLocaleString('pt-BR')} km</b></span>` : ''}
-                <span class="stat">📋 <b>${total}</b></span>
-                <span class="stat">✅ <b>${ok}</b></span>
-                <span class="stat">❌ <b>${fal}</b></span>
-                <span class="stat">⚠️ <b>${ava}</b></span>
-                ${pend ? `<span class="stat">⏳ <b>${pend}</b></span>` : ''}
-              `;
+                        ${S.hodometro ? `<span class="stat">🔢 <b>${Number(S.hodometro).toLocaleString('pt-BR')} km</b></span>` : ''}
+                        <span class="stat">📋 <b>${total}</b></span>
+                        <span class="stat">✅ <b>${ok}</b></span>
+                        <span class="stat">❌ <b>${fal}</b></span>
+                        <span class="stat">⚠️ <b>${ava}</b></span>
+                        ${pend ? `<span class="stat">⏳ <b>${pend}</b></span>` : ''}
+                      `;
         }
 
         function setStatus(id, st) { S.conferencia[id].status = st; renderItens(); }
@@ -2607,7 +2599,7 @@
 
         async function abrirHistorico() {
             try {
-                const { collection, getDocs, query, orderBy, limit } = window._fsLib;  
+                const { collection, getDocs, query, orderBy, limit } = window._fsLib;
 
                 const q = query(
                     collection(window._db, 'historico'),
@@ -2644,10 +2636,10 @@
 
             document.getElementById('modalHistorico').style.display = 'none';
             document.getElementById('histDetalhe').innerHTML = `
-        <div style="text-align:center;color:#444;">
-          <div style="font-size:48px;margin-bottom:12px;">📋</div>
-          <p style="font-size:15px;">Selecione uma passagem ao lado para ver os detalhes</p>
-        </div>`;
+                <div style="text-align:center;color:#444;">
+                  <div style="font-size:48px;margin-bottom:12px;">📋</div>
+                  <p style="font-size:15px;">Selecione uma passagem ao lado para ver os detalhes</p>
+                </div>`;
         }
 
 
@@ -2687,17 +2679,17 @@
             cont.innerHTML = lista.map((h, i) => {
                 const idx = _histDados.indexOf(h); // índice real para o detalhe
                 return `
-                  <div class="hist-item" id="hist-card-${idx}" onclick="verDetalheHistorico(${idx})">
-                    <div class="viatura">${h.unidade}</div>
-                    <div class="data">${h.data}</div>
-                    <div class="nomes">↑ ${h.sainte || '—'} &nbsp;|&nbsp; ↓ ${h.entrante || '—'}</div>
-                    <div class="badges">
-                      <span class="badge ok">✅ ${h.resumo.ok}</span>
-                      <span class="badge fal">❌ ${h.resumo.fal}</span>
-                      <span class="badge ava">⚠️ ${h.resumo.ava}</span>
-                      ${h.hodometro ? `<span class="badge" style="background:#1a2a3a;color:#5dade2;">🛣 ${Number(h.hodometro).toLocaleString('pt-BR')} km</span>` : ''}
-                    </div>
-                  </div>`;
+                          <div class="hist-item" id="hist-card-${idx}" onclick="verDetalheHistorico(${idx})">
+                            <div class="viatura">${h.unidade}</div>
+                            <div class="data">${h.data}</div>
+                            <div class="nomes">↑ ${h.sainte || '—'} &nbsp;|&nbsp; ↓ ${h.entrante || '—'}</div>
+                            <div class="badges">
+                              <span class="badge ok">✅ ${h.resumo.ok}</span>
+                              <span class="badge fal">❌ ${h.resumo.fal}</span>
+                              <span class="badge ava">⚠️ ${h.resumo.ava}</span>
+                              ${h.hodometro ? `<span class="badge" style="background:#1a2a3a;color:#5dade2;">🛣 ${Number(h.hodometro).toLocaleString('pt-BR')} km</span>` : ''}
+                            </div>
+                          </div>`;
             }).join('');
         }
 
@@ -2735,57 +2727,57 @@
             const renderGrupo = (lista, cls, label) => {
                 if (!lista.length) return '';
                 return `
-                  <div class="detalhe-secao">
-                    <h3>${label} (${lista.length})</h3>
-                    ${lista.map(it => `
-                      <div class="detalhe-item">
-                        <span class="nome-item">${it.nome || it.item || '—'}</span>
-                        ${it.obs ? `<span class="obs-item">${it.obs}</span>` : ''}
-                        <span class="status-${cls}">${label.split(' ')[0]}</span>
-                      </div>`).join('')}
-                  </div>`;
+                          <div class="detalhe-secao">
+                            <h3>${label} (${lista.length})</h3>
+                            ${lista.map(it => `
+                              <div class="detalhe-item">
+                                <span class="nome-item">${it.nome || it.item || '—'}</span>
+                                ${it.obs ? `<span class="obs-item">${it.obs}</span>` : ''}
+                                <span class="status-${cls}">${label.split(' ')[0]}</span>
+                              </div>`).join('')}
+                          </div>`;
             };
 
             painel.innerHTML = `
-                <div style="max-width:700px; width:100%;">
+                        <div style="max-width:700px; width:100%;">
 
-                  <!-- Cabeçalho da passagem -->
-                  <div class="detalhe-secao" style="border-color:#c0392b;">
-                    <h3>📋 Passagem de Serviço</h3>
-                    <div class="detalhe-item"><span>Viatura</span><strong style="color:#fff">${h.unidade}</strong></div>
-                    <div class="detalhe-item"><span>Data / Hora</span><span>${h.data}</span></div>
-                    <div class="detalhe-item"><span>Sainte</span><span>${h.sainte || '—'}</span></div>
-                    <div class="detalhe-item"><span>Entrante</span><span>${h.entrante || '—'}</span></div>
-                    ${h.hodometro ? `<div class="detalhe-item"><span>Hodômetro</span><span>${Number(h.hodometro).toLocaleString('pt-BR')} km</span></div>` : ''}
-                    ${h.obs ? `<div class="detalhe-item"><span>Observações gerais</span><span style="color:#f39c12">${h.obs}</span></div>` : ''}
-                  </div>
+                          <!-- Cabeçalho da passagem -->
+                          <div class="detalhe-secao" style="border-color:#c0392b;">
+                            <h3>📋 Passagem de Serviço</h3>
+                            <div class="detalhe-item"><span>Viatura</span><strong style="color:#fff">${h.unidade}</strong></div>
+                            <div class="detalhe-item"><span>Data / Hora</span><span>${h.data}</span></div>
+                            <div class="detalhe-item"><span>Sainte</span><span>${h.sainte || '—'}</span></div>
+                            <div class="detalhe-item"><span>Entrante</span><span>${h.entrante || '—'}</span></div>
+                            ${h.hodometro ? `<div class="detalhe-item"><span>Hodômetro</span><span>${Number(h.hodometro).toLocaleString('pt-BR')} km</span></div>` : ''}
+                            ${h.obs ? `<div class="detalhe-item"><span>Observações gerais</span><span style="color:#f39c12">${h.obs}</span></div>` : ''}
+                          </div>
 
-                  <!-- Resumo -->
-                  <div class="detalhe-secao">
-                    <h3>📊 Resumo</h3>
-                    <div style="display:flex;gap:16px;flex-wrap:wrap;">
-                      <div style="flex:1;text-align:center;background:#1a3a2a;border-radius:8px;padding:14px;">
-                        <div style="font-size:28px;font-weight:bold;color:#2ecc71">${h.resumo.ok}</div>
-                        <div style="font-size:12px;color:#aaa;margin-top:4px;">Conformes</div>
-                      </div>
-                      <div style="flex:1;text-align:center;background:#3a1a1a;border-radius:8px;padding:14px;">
-                        <div style="font-size:28px;font-weight:bold;color:#e74c3c">${h.resumo.fal}</div>
-                        <div style="font-size:12px;color:#aaa;margin-top:4px;">Falhas</div>
-                      </div>
-                      <div style="flex:1;text-align:center;background:#3a2e1a;border-radius:8px;padding:14px;">
-                        <div style="font-size:28px;font-weight:bold;color:#f39c12">${h.resumo.ava}</div>
-                        <div style="font-size:12px;color:#aaa;margin-top:4px;">Avarias</div>
-                      </div>
-                    </div>
-                  </div>
+                          <!-- Resumo -->
+                          <div class="detalhe-secao">
+                            <h3>📊 Resumo</h3>
+                            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                              <div style="flex:1;text-align:center;background:#1a3a2a;border-radius:8px;padding:14px;">
+                                <div style="font-size:28px;font-weight:bold;color:#2ecc71">${h.resumo.ok}</div>
+                                <div style="font-size:12px;color:#aaa;margin-top:4px;">Conformes</div>
+                              </div>
+                              <div style="flex:1;text-align:center;background:#3a1a1a;border-radius:8px;padding:14px;">
+                                <div style="font-size:28px;font-weight:bold;color:#e74c3c">${h.resumo.fal}</div>
+                                <div style="font-size:12px;color:#aaa;margin-top:4px;">Falhas</div>
+                              </div>
+                              <div style="flex:1;text-align:center;background:#3a2e1a;border-radius:8px;padding:14px;">
+                                <div style="font-size:28px;font-weight:bold;color:#f39c12">${h.resumo.ava}</div>
+                                <div style="font-size:12px;color:#aaa;margin-top:4px;">Avarias</div>
+                              </div>
+                            </div>
+                          </div>
 
-                  <!-- Itens por grupo -->
-                  ${renderGrupo(grupos.fal, 'fal', '❌ Falhas')}
-                  ${renderGrupo(grupos.ava, 'ava', '⚠️ Avarias')}
-                  ${renderGrupo(grupos.ok, 'ok', '✅ Conformes')}
+                          <!-- Itens por grupo -->
+                          ${renderGrupo(grupos.fal, 'fal', '❌ Falhas')}
+                          ${renderGrupo(grupos.ava, 'ava', '⚠️ Avarias')}
+                          ${renderGrupo(grupos.ok, 'ok', '✅ Conformes')}
 
-                  ${!itens.length ? `<div class="detalhe-secao" style="text-align:center;color:#555;">Detalhamento de itens não disponível para esta passagem.</div>` : ''}
-                </div>`;
+                          ${!itens.length ? `<div class="detalhe-secao" style="text-align:center;color:#555;">Detalhamento de itens não disponível para esta passagem.</div>` : ''}
+                        </div>`;
         }
 
 
@@ -2895,17 +2887,17 @@
 
             const cont = document.getElementById('ajudaConteudo');
             cont.innerHTML = `
-                <div style="margin-top:16px">
-                  <h3 style="color:#e74c3c;margin-bottom:12px">${tp.titulo}</h3>
-                  ${tp.passos.map((p, i) => `
-                    <div class="ajuda-passo">
-                      <div class="ajuda-passo-num">${i + 1}</div>
-                      <div class="ajuda-passo-txt">${p}</div>
-                    </div>
-                  `).join('')}
-                  ${t === 'faq' ? gerarFaq() : ''}
-                </div>
-              `;
+                        <div style="margin-top:16px">
+                          <h3 style="color:#e74c3c;margin-bottom:12px">${tp.titulo}</h3>
+                          ${tp.passos.map((p, i) => `
+                            <div class="ajuda-passo">
+                              <div class="ajuda-passo-num">${i + 1}</div>
+                              <div class="ajuda-passo-txt">${p}</div>
+                            </div>
+                          `).join('')}
+                          ${t === 'faq' ? gerarFaq() : ''}
+                        </div>
+                      `;
             cont.scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -2919,11 +2911,11 @@
                 { q: 'Por que preciso informar o hodômetro?', r: 'O hodômetro é registrado no relatório PDF para controle de quilometragem na passagem de serviço da viatura.' }
             ];
             return perguntas.map(p => `
-                <div class="faq-item" onclick="this.classList.toggle('aberto')">
-                  <div class="faq-q">${p.q}</div>
-                  <div class="faq-r">${p.r}</div>
-                </div>
-              `).join('');
+                        <div class="faq-item" onclick="this.classList.toggle('aberto')">
+                          <div class="faq-q">${p.q}</div>
+                          <div class="faq-r">${p.r}</div>
+                        </div>
+                      `).join('');
         }
 
         /* ========== TOUR ========== */
@@ -2952,19 +2944,19 @@
             const p = TOUR_PASSOS[tourAtual];
             const tot = TOUR_PASSOS.length;
             document.getElementById('tourCard').innerHTML = `
-                <div class="tour-icone">${p.icone}</div>
-                <div class="tour-titulo">${p.titulo}</div>
-                <div class="tour-texto">${p.texto}</div>
-                <div class="tour-progresso">
-                  ${TOUR_PASSOS.map((_, i) => `<div class="tour-bolinha ${i === tourAtual ? 'ativa' : ''}"></div>`).join('')}
-                </div>
-                <div class="tour-botoes">
-                  ${tourAtual > 0 ? `<button class="tour-btn secundario" onclick="tourAnterior()">← Anterior</button>` : ''}
-                  ${tourAtual < tot - 1
+                        <div class="tour-icone">${p.icone}</div>
+                        <div class="tour-titulo">${p.titulo}</div>
+                        <div class="tour-texto">${p.texto}</div>
+                        <div class="tour-progresso">
+                          ${TOUR_PASSOS.map((_, i) => `<div class="tour-bolinha ${i === tourAtual ? 'ativa' : ''}"></div>`).join('')}
+                        </div>
+                        <div class="tour-botoes">
+                          ${tourAtual > 0 ? `<button class="tour-btn secundario" onclick="tourAnterior()">← Anterior</button>` : ''}
+                          ${tourAtual < tot - 1
                     ? `<button class="tour-btn primario" onclick="tourProximo()">Próximo →</button>`
                     : `<button class="tour-btn primario" onclick="pularTour()">🚀 Começar!</button>`}
-                </div>
-              `;
+                        </div>
+                      `;
         }
         function tourProximo() { if (tourAtual < TOUR_PASSOS.length - 1) { tourAtual++; renderTour(); } }
         function tourAnterior() { if (tourAtual > 0) { tourAtual--; renderTour(); } }
@@ -3043,10 +3035,10 @@
                     const card = document.createElement('div');
                     card.className = 'unid-card';
                     card.innerHTML = `
-                    <span class="ico-mini">${iconeUnidade(u.nome, 'VIATURA')}</span>
-                    ${u.nome}
-                    <div class="qtd-itens">${totalItens} itens</div>
-                  `;
+                            <span class="ico-mini">${iconeUnidade(u.nome, 'VIATURA')}</span>
+                            ${u.nome}
+                            <div class="qtd-itens">${totalItens} itens</div>
+                          `;
                     card.onclick = () => abrirItensAvulsa(u.nome);
                     grid.appendChild(card);
                 });
@@ -3068,9 +3060,9 @@
             const totalIt = Object.values(S.unidadeAtual.compartimentos)
                 .reduce((s, arr) => s + arr.length, 0);
             document.getElementById('avulsaResumo').innerHTML = `
-                <span class="stat">📦 <b>${comps}</b> compartimento${comps !== 1 ? 's' : ''}</span>
-                <span class="stat">📋 <b>${totalIt}</b> item${totalIt !== 1 ? 's' : ''}</span>
-              `;
+                        <span class="stat">📦 <b>${comps}</b> compartimento${comps !== 1 ? 's' : ''}</span>
+                        <span class="stat">📋 <b>${totalIt}</b> item${totalIt !== 1 ? 's' : ''}</span>
+                      `;
 
             renderItensAvulsa();
         }
@@ -3102,14 +3094,14 @@
                     const div = document.createElement('div');
                     div.className = 'item-avulsa';
                     div.innerHTML = `
-                    <div class="info">
-                      <b>${it.material}</b>
-                      ${it.patrimonio ? `<small>🏷️ Patrim: ${it.patrimonio}</small>` : ''}
-                      ${it.serie ? `<small>🔢 Série: ${it.serie}</small>` : ''}
-                      ${it.obs ? `<small>📝 ${it.obs}</small>` : ''}
-                    </div>
-                    <span class="qtd-badge">×${it.qtd}</span>
-                  `;
+                            <div class="info">
+                              <b>${it.material}</b>
+                              ${it.patrimonio ? `<small>🏷️ Patrim: ${it.patrimonio}</small>` : ''}
+                              ${it.serie ? `<small>🔢 Série: ${it.serie}</small>` : ''}
+                              ${it.obs ? `<small>📝 ${it.obs}</small>` : ''}
+                            </div>
+                            <span class="qtd-badge">×${it.qtd}</span>
+                          `;
                     wrap.appendChild(div);
                 });
 
@@ -3185,11 +3177,16 @@
 
     <footer class="footer">
         <p><strong>© 2026 BBZU - Bombeiro Bizurado</strong></p>
-        <p>Sistema de Passagem de Serviço Bombeiro Militar v3.0</p>
+        <p id="footer-version"></p>
         <p class="footer-dev">
             Desenvolvedor do App: Gabriel Souza Costa Ferreira &nbsp;|&nbsp; N° BM: 184.216-0
         </p>
     </footer>
+
+    <script>
+        document.getElementById('footer-version').textContent =
+            `Sistema de Passagem de Serviço Bombeiro Militar v${APP_VERSION}`;
+    </script>
 
 </body>
 </html>
