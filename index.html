@@ -1877,10 +1877,10 @@
                     const card = document.createElement('div');
                     card.className = 'unid-card';
                     card.innerHTML = `
-                            <span class="ico-mini">${iconeUnidade(u.nome, tipo)}</span>
-                            ${u.nome}
-                            <div class="qtd-itens">${totalItens} itens</div>
-                          `;
+                                <span class="ico-mini">${iconeUnidade(u.nome, tipo)}</span>
+                                ${u.nome}
+                                <div class="qtd-itens">${totalItens} itens</div>
+                              `;
                     card.onclick = () => selecionarUnidade(u.nome);
                     grid.appendChild(card);
                 });
@@ -1994,21 +1994,21 @@
                     const div = document.createElement('div');
                     div.className = 'item ' + (c.status === 'OK' ? 'ok' : c.status === 'FAL' ? 'fal' : c.status === 'AVA' ? 'ava' : '');
                     div.innerHTML = `
-                            <h4>${it.material} <span style="float:right;color:#c0392b">×${it.qtd}</span></h4>
-                            ${it.patrimonio ? `<small>🏷️ Patrim: ${it.patrimonio}</small>` : ''}
-                            ${it.serie ? `<small>🔢 Série: ${it.serie}</small>` : ''}
-                            ${it.obs ? `<small>📝 ${it.obs}</small>` : ''}
-                            <div class="row">
-                              <button class="ok"   onclick="setStatus('${it.id}','OK')">✅ OK</button>
-                              <button class="warn" onclick="setStatus('${it.id}','AVA')">⚠️ Avariado</button>
-                              <button             onclick="setStatus('${it.id}','FAL')">❌ Faltando</button>
-                            </div>
-                            ${c.status === 'FAL' || c.status === 'AVA' ? `
-                              <textarea placeholder="Observação..." onchange="setObs('${it.id}',this.value)">${c.obs}</textarea>
-                              <div class="row"><button class="sec" onclick="tirarFoto('${it.id}')">📸 Foto</button></div>
-                              <div>${c.fotos.map(f => `<img class="photo-thumb" src="${f}">`).join('')}</div>
-                            ` : ''}
-                          `;
+                                <h4>${it.material} <span style="float:right;color:#c0392b">×${it.qtd}</span></h4>
+                                ${it.patrimonio ? `<small>🏷️ Patrim: ${it.patrimonio}</small>` : ''}
+                                ${it.serie ? `<small>🔢 Série: ${it.serie}</small>` : ''}
+                                ${it.obs ? `<small>📝 ${it.obs}</small>` : ''}
+                                <div class="row">
+                                  <button class="ok"   onclick="setStatus('${it.id}','OK')">✅ OK</button>
+                                  <button class="warn" onclick="setStatus('${it.id}','AVA')">⚠️ Avariado</button>
+                                  <button             onclick="setStatus('${it.id}','FAL')">❌ Faltando</button>
+                                </div>
+                                ${c.status === 'FAL' || c.status === 'AVA' ? `
+                                  <textarea placeholder="Observação..." onchange="setObs('${it.id}',this.value)">${c.obs}</textarea>
+                                  <div class="row"><button class="sec" onclick="tirarFoto('${it.id}')">📸 Foto</button></div>
+                                  <div>${c.fotos.map(f => `<img class="photo-thumb" src="${f}">`).join('')}</div>
+                                ` : ''}
+                              `;
                     wrap.appendChild(div);
                 });
                 cont.appendChild(wrap);
@@ -2016,13 +2016,13 @@
 
             // ✅ Status bar com hodômetro
             document.getElementById('statusBar').innerHTML = `
-                        ${S.hodometro ? `<span class="stat">🔢 <b>${Number(S.hodometro).toLocaleString('pt-BR')} km</b></span>` : ''}
-                        <span class="stat">📋 <b>${total}</b></span>
-                        <span class="stat">✅ <b>${ok}</b></span>
-                        <span class="stat">❌ <b>${fal}</b></span>
-                        <span class="stat">⚠️ <b>${ava}</b></span>
-                        ${pend ? `<span class="stat">⏳ <b>${pend}</b></span>` : ''}
-                      `;
+                            ${S.hodometro ? `<span class="stat">🔢 <b>${Number(S.hodometro).toLocaleString('pt-BR')} km</b></span>` : ''}
+                            <span class="stat">📋 <b>${total}</b></span>
+                            <span class="stat">✅ <b>${ok}</b></span>
+                            <span class="stat">❌ <b>${fal}</b></span>
+                            <span class="stat">⚠️ <b>${ava}</b></span>
+                            ${pend ? `<span class="stat">⏳ <b>${pend}</b></span>` : ''}
+                          `;
         }
 
         function setStatus(id, st) { S.conferencia[id].status = st; renderItens(); }
@@ -2164,6 +2164,17 @@
             S.telaAtual = 'home';
         }
 
+
+        async function getImageBase64(url) {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                reader.readAsDataURL(blob);
+            });
+        }
+
         /* ========== GERAR PDF & SALVAR ========== */
         async function gerarRelatorio() {
             const { jsPDF } = window.jspdf;
@@ -2234,7 +2245,8 @@
             }
 
             // ── CABEÇALHO ────────────────────────────────────────────────────
-            const LOGO_B64 = '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'; // cole o base64 completo aqui
+            const LOGO_B64 = await getImageBase64('brasao-cbmmg.png');
+            const LOGO_FORMAT = 'PNG';
 
             // Fundo branco
             pdf.setFillColor(...BRANCO);
@@ -2242,7 +2254,7 @@
 
             // Logo CBMMG
             try {
-                pdf.addImage('data:image/png;base64,' + LOGO_B64, 'PNG', L, 3, 20, 20);
+                pdf.addImage(LOGO_B64, 'PNG', L, 3, 20, 20);
             } catch (e) { }
 
             // Linha vertical vermelha
@@ -2592,6 +2604,321 @@
 
         }
 
+        async function gerarPDFHistorico(passagem) {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            // ── Paleta de cores ──
+            const VERMELHO = [192, 57, 43];
+            const VERDE = [16, 185, 129];
+            const CINZA_ESC = [15, 23, 42];
+            const CINZA_MED = [100, 116, 139];
+            const CINZA_CLR = [203, 213, 225];
+            const FUNDO_LBL = [248, 250, 252];
+            const BRANCO = [255, 255, 255];
+
+            const L = 14, R = 196, W = R - L;
+            let y = 0;
+
+            // ── Carrega logo em Base64 ──
+            async function getImageBase64(url) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.naturalWidth;
+                        canvas.height = img.naturalHeight;
+                        canvas.getContext('2d').drawImage(img, 0, 0);
+                        resolve(canvas.toDataURL('image/png'));
+                    };
+                    img.onerror = reject;
+                    img.src = url + '?v=' + Date.now(); // evita cache corrompido
+                });
+            }
+
+
+            let LOGO_B64 = null;
+            try {
+                LOGO_B64 = await getImageBase64('brasao-cbmmg.png');
+                console.log('Logo carregada:', LOGO_B64 ? LOGO_B64.substring(0, 60) : 'NULA');
+            } catch (e) {
+                console.warn('Logo não encontrada:', e);
+            }
+
+
+            function checkPage(needed = 20) {
+                if (y + needed > pdf.internal.pageSize.height - 18) {
+                    pdf.addPage();
+                    y = 20;
+                }
+            }
+
+            function campo(lbl, val, x, yPos, width) {
+                pdf.setFillColor(...FUNDO_LBL);
+                pdf.roundedRect(x, yPos - 4, width, 14, 2, 2, 'F');
+                pdf.setDrawColor(...CINZA_CLR);
+                pdf.setLineWidth(0.3);
+                pdf.roundedRect(x, yPos - 4, width, 14, 2, 2, 'S');
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(7);
+                pdf.setTextColor(...VERMELHO);
+                pdf.text(lbl.toUpperCase(), x + 4, yPos + 1);
+                pdf.setFont('helvetica', 'normal');
+                pdf.setFontSize(9);
+                pdf.setTextColor(...CINZA_ESC);
+                pdf.text(String(val || '—'), x + 4, yPos + 8);
+            }
+
+            function secTitulo(txt) {
+                checkPage(14);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(8);
+                pdf.setTextColor(...CINZA_MED);
+                pdf.text(txt.toUpperCase(), L, y);
+                y += 3;
+                pdf.setDrawColor(...CINZA_CLR);
+                pdf.setLineWidth(0.3);
+                pdf.line(L, y, R, y);
+                y += 6;
+            }
+
+            // ── CABEÇALHO ──
+            pdf.setFillColor(...BRANCO);
+            pdf.rect(0, 0, 210, 32, 'F');
+
+            // Logo (se carregou com sucesso)
+            if (LOGO_B64) {
+                pdf.addImage(LOGO_B64, 'PNG', L, 4, 18, 18);
+            }
+
+            pdf.setDrawColor(...VERMELHO);
+            pdf.setLineWidth(0.6);
+            pdf.line(L + 23, 5, L + 23, 22);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(11);
+            pdf.setTextColor(...VERMELHO);
+            pdf.text('Corpo de Bombeiros Militar de Minas Gerais', L + 27, 11);
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(8);
+            pdf.setTextColor(...CINZA_MED);
+            pdf.text('Sistema BombeiroCheck — Passagem de Serviço — CBMMG', L + 27, 18);
+            pdf.setDrawColor(...VERMELHO);
+            pdf.setLineWidth(0.8);
+            pdf.line(0, 27, 210, 27);
+            pdf.setDrawColor(...CINZA_CLR);
+            pdf.setLineWidth(0.3);
+            pdf.line(0, 28.5, 210, 28.5);
+
+            y = 38;
+
+            // ── TÍTULO ──
+            pdf.setTextColor(...CINZA_ESC);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(15);
+            pdf.text('Relatorio de Passagem de Servico', L + 10, y);
+            y += 5;
+            pdf.setDrawColor(...CINZA_MED);
+            pdf.setLineWidth(0.5);
+            pdf.line(L, y, R, y);
+            y += 8;
+
+            // ── GRID DE CAMPOS ──
+            const col1 = L;
+            const col2 = L + (R - L) / 2 + 3;
+            const w2 = (R - L) / 2 - 3;
+
+            campo('Unidade', passagem.unidade, col1, y, w2);
+            campo('Data / Hora', passagem.data, col2, y, w2);
+            y += 20;
+
+            campo('Sainte (quem entrega)', passagem.sainte, col1, y, w2);
+            campo('Entrante (quem recebe)', passagem.entrante, col2, y, w2);
+            y += 20;
+
+            const terc = (R - L - 6) / 3;
+            const hod = passagem.hodometro
+                ? Number(passagem.hodometro).toLocaleString('pt-BR') + ' km'
+                : '—';
+            campo('Tipo', passagem.tipo || '—', col1, y, terc);
+            campo('Papel', passagem.papel ? passagem.papel.toUpperCase() : '—', col1 + terc + 3, y, terc);
+            campo('Hodometro', hod, col1 + 2 * (terc + 3), y, terc);
+            y += 20;
+
+            // ── RESUMO ──
+            const { ok = 0, fal = 0, ava = 0 } = passagem.resumo || {};
+            const total = (passagem.itens || []).length;
+            const pend = total - ok - fal - ava;
+
+            secTitulo('Resumo da Conferência');
+
+            const badges = [
+                { lbl: 'TOTAL', val: total, bg: [51, 73, 94] },
+                { lbl: 'CONFORMES', val: ok, bg: [39, 174, 96] },
+                { lbl: 'FALTANDO', val: fal, bg: [231, 76, 60] },
+                { lbl: 'AVARIADOS', val: ava, bg: [243, 156, 18] },
+                { lbl: 'PENDENTES', val: pend, bg: [100, 116, 139] },
+            ];
+            const badgeW = (R - L) / badges.length - 2;
+            badges.forEach((b, i) => {
+                const bx = L + i * (badgeW + 2);
+                pdf.setFillColor(...b.bg);
+                pdf.roundedRect(bx, y - 3, badgeW, 16, 3, 3, 'F');
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(16);
+                pdf.setTextColor(...BRANCO);
+                pdf.text(String(b.val), bx + badgeW / 2, y + 7, { align: 'center' });
+                pdf.setFontSize(6);
+                pdf.setFont('helvetica', 'normal');
+                pdf.text(b.lbl, bx + badgeW / 2, y + 12, { align: 'center' });
+            });
+            y += 22;
+
+            // ── ITENS COM OCORRÊNCIA ──
+            const ocorrencias = (passagem.itens || []).filter(it => it.status === 'FAL' || it.status === 'AVA');
+
+            secTitulo('Itens com Ocorrência');
+
+            if (ocorrencias.length > 0) {
+                ocorrencias.forEach(it => {
+                    const isFal = it.status === 'FAL';
+                    const corBg = isFal ? [254, 242, 242] : [255, 251, 235];
+                    const corBr = isFal ? [252, 202, 202] : [253, 230, 138];
+                    const corTag = isFal ? VERMELHO : [217, 119, 6];
+                    const linhasObs = it.obs ? pdf.splitTextToSize('Obs: ' + it.obs, W - 38) : [];
+                    const boxH = 13 + (linhasObs.length > 0 ? linhasObs.length * 4 + 5 : 0);
+
+                    checkPage(boxH + 6);
+
+                    pdf.setFillColor(...corBg);
+                    pdf.setDrawColor(...corBr);
+                    pdf.setLineWidth(0.4);
+                    pdf.roundedRect(L, y - 3, W, boxH, 2, 2, 'FD');
+                    pdf.setFillColor(...corTag);
+                    pdf.roundedRect(L, y - 3, 3, boxH, 1, 1, 'F');
+
+                    const tagW = isFal ? 22 : 26;
+                    pdf.setFillColor(...corTag);
+                    pdf.roundedRect(L + 6, y - 1, tagW, 6, 1, 1, 'F');
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setFontSize(6.5);
+                    pdf.setTextColor(...BRANCO);
+                    pdf.text(isFal ? 'FALTANDO' : 'AVARIADO', L + 6 + tagW / 2, y + 3.5, { align: 'center' });
+
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setFontSize(9.5);
+                    pdf.setTextColor(...CINZA_ESC);
+                    pdf.text(it.nome, L + 36, y + 3.5);
+
+                    pdf.setFont('helvetica', 'normal');
+                    pdf.setFontSize(7.5);
+                    pdf.setTextColor(...CINZA_MED);
+                    pdf.text(`${it.comp}  ·  Qtd: ${it.qtd}`, L + 36, y + 9);
+
+                    if (linhasObs.length > 0) {
+                        pdf.setFont('helvetica', 'italic');
+                        pdf.setFontSize(7.5);
+                        pdf.setTextColor(...CINZA_MED);
+                        pdf.text(linhasObs, L + 6, y + 15);
+                    }
+
+                    y += boxH + 4;
+                });
+            } else {
+                checkPage(16);
+                pdf.setFillColor(236, 253, 245);
+                pdf.setDrawColor(167, 243, 208);
+                pdf.setLineWidth(0.4);
+                pdf.roundedRect(L, y - 3, W, 12, 2, 2, 'FD');
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(9);
+                pdf.setTextColor(6, 95, 70);
+                pdf.text('Todas as conferencias OK', L + 5, y + 5);
+                y += 16;
+            }
+
+            // ── OBSERVAÇÕES GERAIS ──
+            const textoObs = passagem.obs || 'Sem observacoes';
+            secTitulo('Observacoes Gerais');
+            const linhasObs = pdf.splitTextToSize(textoObs, W - 14);
+            const obsH = linhasObs.length * 5 + 10;
+            checkPage(obsH + 8);
+
+            pdf.setFillColor(...FUNDO_LBL);
+            pdf.setDrawColor(...CINZA_CLR);
+            pdf.setLineWidth(0.4);
+            pdf.roundedRect(L, y - 3, W, obsH, 2, 2, 'FD');
+            pdf.setFillColor(...VERMELHO);
+            pdf.roundedRect(L, y - 3, 3, obsH, 1, 1, 'F');
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(9);
+            pdf.setTextColor(...CINZA_ESC);
+            pdf.text(linhasObs, L + 8, y + 4);
+            y += obsH + 6;
+
+            // ── ASSINATURAS ──
+            checkPage(50);
+            secTitulo('Assinaturas');
+
+            const wSig = (R - L) / 2 - 4;
+            const boxSigH = 30;
+
+            const sigConfig = [
+                { label: 'SAINTE — Quem Entrega', cor: VERMELHO, bgRGB: [254, 242, 242], brdRGB: [252, 202, 202], nome: passagem.sainte },
+                { label: 'ENTRANTE — Quem Recebe', cor: VERDE, bgRGB: [236, 253, 245], brdRGB: [167, 243, 208], nome: passagem.entrante },
+            ];
+
+            sigConfig.forEach((cfg, i) => {
+                const sx = L + i * (wSig + 8);
+                pdf.setFillColor(...cfg.bgRGB);
+                pdf.setDrawColor(...cfg.brdRGB);
+                pdf.setLineWidth(0.4);
+                pdf.roundedRect(sx, y - 3, wSig, boxSigH, 2, 2, 'FD');
+                pdf.setFillColor(...cfg.cor);
+                pdf.circle(sx + 6, y + 2.5, 2, 'F');
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(7);
+                pdf.setTextColor(...cfg.cor);
+                pdf.text(cfg.label, sx + 10, y + 3.5);
+                pdf.setFont('helvetica', 'italic');
+                pdf.setFontSize(7);
+                pdf.setTextColor(...CINZA_MED);
+                pdf.text('* Assinatura registrada na passagem original', sx + 4, y + 13);
+                const lineY = y + boxSigH - 8;
+                pdf.setDrawColor(...CINZA_CLR);
+                pdf.setLineWidth(0.4);
+                pdf.line(sx + 4, lineY, sx + wSig - 4, lineY);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(8);
+                pdf.setTextColor(...CINZA_ESC);
+                pdf.text(cfg.nome || '—', sx + wSig / 2, lineY + 5, { align: 'center' });
+            });
+
+            y += boxSigH + 10;
+
+            // ── RODAPÉ ──
+            const totalPages = pdf.internal.getNumberOfPages();
+            for (let p = 1; p <= totalPages; p++) {
+                pdf.setPage(p);
+                const ph = pdf.internal.pageSize.height;
+                pdf.setFillColor(...VERMELHO);
+                pdf.rect(0, ph - 14, 210, 14, 'F');
+                pdf.setFont('helvetica', 'normal');
+                pdf.setFontSize(7);
+                pdf.setTextColor(...BRANCO);
+                pdf.text(
+                    `Emitido em ${passagem.data} — BombeiroCheck · Sistema de Passagem de Servico v3.0`,
+                    105, ph - 8, { align: 'center' }
+                );
+                pdf.text(`Pagina ${p} de ${totalPages}`, 105, ph - 4, { align: 'center' });
+            }
+
+            const nomeArquivo = `passagem_${passagem.unidade}_${passagem.data
+                .split(',')[0].replace(/\//g, '-')}.pdf`;
+            pdf.save(nomeArquivo);
+        }
+
+
 
         /* ========== HISTÓRICO TELA CHEIA ========== */
 
@@ -2636,10 +2963,10 @@
 
             document.getElementById('modalHistorico').style.display = 'none';
             document.getElementById('histDetalhe').innerHTML = `
-                <div style="text-align:center;color:#444;">
-                  <div style="font-size:48px;margin-bottom:12px;">📋</div>
-                  <p style="font-size:15px;">Selecione uma passagem ao lado para ver os detalhes</p>
-                </div>`;
+                    <div style="text-align:center;color:#444;">
+                      <div style="font-size:48px;margin-bottom:12px;">📋</div>
+                      <p style="font-size:15px;">Selecione uma passagem ao lado para ver os detalhes</p>
+                    </div>`;
         }
 
 
@@ -2679,17 +3006,17 @@
             cont.innerHTML = lista.map((h, i) => {
                 const idx = _histDados.indexOf(h); // índice real para o detalhe
                 return `
-                          <div class="hist-item" id="hist-card-${idx}" onclick="verDetalheHistorico(${idx})">
-                            <div class="viatura">${h.unidade}</div>
-                            <div class="data">${h.data}</div>
-                            <div class="nomes">↑ ${h.sainte || '—'} &nbsp;|&nbsp; ↓ ${h.entrante || '—'}</div>
-                            <div class="badges">
-                              <span class="badge ok">✅ ${h.resumo.ok}</span>
-                              <span class="badge fal">❌ ${h.resumo.fal}</span>
-                              <span class="badge ava">⚠️ ${h.resumo.ava}</span>
-                              ${h.hodometro ? `<span class="badge" style="background:#1a2a3a;color:#5dade2;">🛣 ${Number(h.hodometro).toLocaleString('pt-BR')} km</span>` : ''}
-                            </div>
-                          </div>`;
+                              <div class="hist-item" id="hist-card-${idx}" onclick="verDetalheHistorico(${idx})">
+                                <div class="viatura">${h.unidade}</div>
+                                <div class="data">${h.data}</div>
+                                <div class="nomes">↑ ${h.sainte || '—'} &nbsp;|&nbsp; ↓ ${h.entrante || '—'}</div>
+                                <div class="badges">
+                                  <span class="badge ok">✅ ${h.resumo.ok}</span>
+                                  <span class="badge fal">❌ ${h.resumo.fal}</span>
+                                  <span class="badge ava">⚠️ ${h.resumo.ava}</span>
+                                  ${h.hodometro ? `<span class="badge" style="background:#1a2a3a;color:#5dade2;">🛣 ${Number(h.hodometro).toLocaleString('pt-BR')} km</span>` : ''}
+                                </div>
+                              </div>`;
             }).join('');
         }
 
@@ -2701,12 +3028,10 @@
 
 
         function verDetalheHistorico(idx) {
-            // Destaca card ativo
             document.querySelectorAll('.hist-item').forEach(el => el.classList.remove('ativo'));
             const card = document.getElementById(`hist-card-${idx}`);
             if (card) card.classList.add('ativo');
 
-            // ── mobile: troca para tela de detalhe ──
             if (window.innerWidth <= 600) {
                 document.getElementById('histLista').classList.add('oculto');
                 document.getElementById('histDetalhe').classList.add('ativo');
@@ -2716,7 +3041,9 @@
             const h = _histDados[idx];
             const painel = document.getElementById('histDetalhe');
 
-            // Monta itens por status
+            // ── Guarda referência global para o botão de PDF ──
+            window.passagemAtualHistorico = h;
+
             const itens = h.itens || [];
             const grupos = {
                 fal: itens.filter(it => it.status === 'FAL' || it.status === '❌'),
@@ -2727,58 +3054,79 @@
             const renderGrupo = (lista, cls, label) => {
                 if (!lista.length) return '';
                 return `
-                          <div class="detalhe-secao">
-                            <h3>${label} (${lista.length})</h3>
-                            ${lista.map(it => `
-                              <div class="detalhe-item">
-                                <span class="nome-item">${it.nome || it.item || '—'}</span>
-                                ${it.obs ? `<span class="obs-item">${it.obs}</span>` : ''}
-                                <span class="status-${cls}">${label.split(' ')[0]}</span>
-                              </div>`).join('')}
-                          </div>`;
+            <div class="detalhe-secao">
+                <h3>${label} (${lista.length})</h3>
+                ${lista.map(it => `
+                    <div class="detalhe-item">
+                        <span class="nome-item">${it.nome || it.item || '—'}</span>
+                        ${it.obs ? `<span class="obs-item">${it.obs}</span>` : ''}
+                        <span class="status-${cls}">${label.split(' ')[0]}</span>
+                    </div>`).join('')}
+            </div>`;
             };
 
             painel.innerHTML = `
-                        <div style="max-width:700px; width:100%;">
+        <div style="max-width:700px; width:100%;">
 
-                          <!-- Cabeçalho da passagem -->
-                          <div class="detalhe-secao" style="border-color:#c0392b;">
-                            <h3>📋 Passagem de Serviço</h3>
-                            <div class="detalhe-item"><span>Viatura</span><strong style="color:#fff">${h.unidade}</strong></div>
-                            <div class="detalhe-item"><span>Data / Hora</span><span>${h.data}</span></div>
-                            <div class="detalhe-item"><span>Sainte</span><span>${h.sainte || '—'}</span></div>
-                            <div class="detalhe-item"><span>Entrante</span><span>${h.entrante || '—'}</span></div>
-                            ${h.hodometro ? `<div class="detalhe-item"><span>Hodômetro</span><span>${Number(h.hodometro).toLocaleString('pt-BR')} km</span></div>` : ''}
-                            ${h.obs ? `<div class="detalhe-item"><span>Observações gerais</span><span style="color:#f39c12">${h.obs}</span></div>` : ''}
-                          </div>
+            <!-- Cabeçalho -->
+            <div class="detalhe-secao" style="border-color:#c0392b;">
+                <h3>📋 Passagem de Serviço</h3>
+                <div class="detalhe-item"><span>Viatura</span><strong style="color:#fff">${h.unidade}</strong></div>
+                <div class="detalhe-item"><span>Data / Hora</span><span>${h.data}</span></div>
+                <div class="detalhe-item"><span>Sainte</span><span>${h.sainte || '—'}</span></div>
+                <div class="detalhe-item"><span>Entrante</span><span>${h.entrante || '—'}</span></div>
+                ${h.hodometro ? `<div class="detalhe-item"><span>Hodômetro</span><span>${Number(h.hodometro).toLocaleString('pt-BR')} km</span></div>` : ''}
+                ${h.obs ? `<div class="detalhe-item"><span>Observações gerais</span><span style="color:#f39c12">${h.obs}</span></div>` : ''}
+            </div>
 
-                          <!-- Resumo -->
-                          <div class="detalhe-secao">
-                            <h3>📊 Resumo</h3>
-                            <div style="display:flex;gap:16px;flex-wrap:wrap;">
-                              <div style="flex:1;text-align:center;background:#1a3a2a;border-radius:8px;padding:14px;">
-                                <div style="font-size:28px;font-weight:bold;color:#2ecc71">${h.resumo.ok}</div>
-                                <div style="font-size:12px;color:#aaa;margin-top:4px;">Conformes</div>
-                              </div>
-                              <div style="flex:1;text-align:center;background:#3a1a1a;border-radius:8px;padding:14px;">
-                                <div style="font-size:28px;font-weight:bold;color:#e74c3c">${h.resumo.fal}</div>
-                                <div style="font-size:12px;color:#aaa;margin-top:4px;">Falhas</div>
-                              </div>
-                              <div style="flex:1;text-align:center;background:#3a2e1a;border-radius:8px;padding:14px;">
-                                <div style="font-size:28px;font-weight:bold;color:#f39c12">${h.resumo.ava}</div>
-                                <div style="font-size:12px;color:#aaa;margin-top:4px;">Avarias</div>
-                              </div>
-                            </div>
-                          </div>
+            <!-- Resumo -->
+            <div class="detalhe-secao">
+                <h3>📊 Resumo</h3>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                    <div style="flex:1;text-align:center;background:#1a3a2a;border-radius:8px;padding:14px;">
+                        <div style="font-size:28px;font-weight:bold;color:#2ecc71">${h.resumo.ok}</div>
+                        <div style="font-size:12px;color:#aaa;margin-top:4px;">Conformes</div>
+                    </div>
+                    <div style="flex:1;text-align:center;background:#3a1a1a;border-radius:8px;padding:14px;">
+                        <div style="font-size:28px;font-weight:bold;color:#e74c3c">${h.resumo.fal}</div>
+                        <div style="font-size:12px;color:#aaa;margin-top:4px;">Falhas</div>
+                    </div>
+                    <div style="flex:1;text-align:center;background:#3a2e1a;border-radius:8px;padding:14px;">
+                        <div style="font-size:28px;font-weight:bold;color:#f39c12">${h.resumo.ava}</div>
+                        <div style="font-size:12px;color:#aaa;margin-top:4px;">Avarias</div>
+                    </div>
+                </div>
+            </div>
 
-                          <!-- Itens por grupo -->
-                          ${renderGrupo(grupos.fal, 'fal', '❌ Falhas')}
-                          ${renderGrupo(grupos.ava, 'ava', '⚠️ Avarias')}
-                          ${renderGrupo(grupos.ok, 'ok', '✅ Conformes')}
+            <!-- Itens por grupo -->
+            ${renderGrupo(grupos.fal, 'fal', '❌ Falhas')}
+            ${renderGrupo(grupos.ava, 'ava', '⚠️ Avarias')}
+            ${renderGrupo(grupos.ok, 'ok', '✅ Conformes')}
 
-                          ${!itens.length ? `<div class="detalhe-secao" style="text-align:center;color:#555;">Detalhamento de itens não disponível para esta passagem.</div>` : ''}
-                        </div>`;
+            ${!itens.length ? `
+                <div class="detalhe-secao" style="text-align:center;color:#555;">
+                    Detalhamento de itens não disponível para esta passagem.
+                </div>` : ''}
+
+            <button
+                onclick="gerarPDFHistorico(window.passagemAtualHistorico)"
+                style="
+                    width:100%; margin-top:8px; padding:14px;
+                    background:#c0392b; color:#fff; border:none;
+                    border-radius:8px; font-size:15px; font-weight:700;
+                    cursor:pointer; transition:.2s; display:flex;
+                    align-items:center; justify-content:center; gap:8px;
+                "
+                onmouseover="this.style.background='#e74c3c'"
+                onmouseout="this.style.background='#c0392b'"
+            >
+                📄 Gerar PDF desta passagem
+            </button>
+
+
+        </div>`;
         }
+
 
 
         /* ========== AJUDA ========== */
@@ -2887,17 +3235,17 @@
 
             const cont = document.getElementById('ajudaConteudo');
             cont.innerHTML = `
-                        <div style="margin-top:16px">
-                          <h3 style="color:#e74c3c;margin-bottom:12px">${tp.titulo}</h3>
-                          ${tp.passos.map((p, i) => `
-                            <div class="ajuda-passo">
-                              <div class="ajuda-passo-num">${i + 1}</div>
-                              <div class="ajuda-passo-txt">${p}</div>
+                            <div style="margin-top:16px">
+                              <h3 style="color:#e74c3c;margin-bottom:12px">${tp.titulo}</h3>
+                              ${tp.passos.map((p, i) => `
+                                <div class="ajuda-passo">
+                                  <div class="ajuda-passo-num">${i + 1}</div>
+                                  <div class="ajuda-passo-txt">${p}</div>
+                                </div>
+                              `).join('')}
+                              ${t === 'faq' ? gerarFaq() : ''}
                             </div>
-                          `).join('')}
-                          ${t === 'faq' ? gerarFaq() : ''}
-                        </div>
-                      `;
+                          `;
             cont.scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -2911,11 +3259,11 @@
                 { q: 'Por que preciso informar o hodômetro?', r: 'O hodômetro é registrado no relatório PDF para controle de quilometragem na passagem de serviço da viatura.' }
             ];
             return perguntas.map(p => `
-                        <div class="faq-item" onclick="this.classList.toggle('aberto')">
-                          <div class="faq-q">${p.q}</div>
-                          <div class="faq-r">${p.r}</div>
-                        </div>
-                      `).join('');
+                            <div class="faq-item" onclick="this.classList.toggle('aberto')">
+                              <div class="faq-q">${p.q}</div>
+                              <div class="faq-r">${p.r}</div>
+                            </div>
+                          `).join('');
         }
 
         /* ========== TOUR ========== */
@@ -2944,19 +3292,19 @@
             const p = TOUR_PASSOS[tourAtual];
             const tot = TOUR_PASSOS.length;
             document.getElementById('tourCard').innerHTML = `
-                        <div class="tour-icone">${p.icone}</div>
-                        <div class="tour-titulo">${p.titulo}</div>
-                        <div class="tour-texto">${p.texto}</div>
-                        <div class="tour-progresso">
-                          ${TOUR_PASSOS.map((_, i) => `<div class="tour-bolinha ${i === tourAtual ? 'ativa' : ''}"></div>`).join('')}
-                        </div>
-                        <div class="tour-botoes">
-                          ${tourAtual > 0 ? `<button class="tour-btn secundario" onclick="tourAnterior()">← Anterior</button>` : ''}
-                          ${tourAtual < tot - 1
+                            <div class="tour-icone">${p.icone}</div>
+                            <div class="tour-titulo">${p.titulo}</div>
+                            <div class="tour-texto">${p.texto}</div>
+                            <div class="tour-progresso">
+                              ${TOUR_PASSOS.map((_, i) => `<div class="tour-bolinha ${i === tourAtual ? 'ativa' : ''}"></div>`).join('')}
+                            </div>
+                            <div class="tour-botoes">
+                              ${tourAtual > 0 ? `<button class="tour-btn secundario" onclick="tourAnterior()">← Anterior</button>` : ''}
+                              ${tourAtual < tot - 1
                     ? `<button class="tour-btn primario" onclick="tourProximo()">Próximo →</button>`
                     : `<button class="tour-btn primario" onclick="pularTour()">🚀 Começar!</button>`}
-                        </div>
-                      `;
+                            </div>
+                          `;
         }
         function tourProximo() { if (tourAtual < TOUR_PASSOS.length - 1) { tourAtual++; renderTour(); } }
         function tourAnterior() { if (tourAtual > 0) { tourAtual--; renderTour(); } }
@@ -3035,10 +3383,10 @@
                     const card = document.createElement('div');
                     card.className = 'unid-card';
                     card.innerHTML = `
-                            <span class="ico-mini">${iconeUnidade(u.nome, 'VIATURA')}</span>
-                            ${u.nome}
-                            <div class="qtd-itens">${totalItens} itens</div>
-                          `;
+                                <span class="ico-mini">${iconeUnidade(u.nome, 'VIATURA')}</span>
+                                ${u.nome}
+                                <div class="qtd-itens">${totalItens} itens</div>
+                              `;
                     card.onclick = () => abrirItensAvulsa(u.nome);
                     grid.appendChild(card);
                 });
@@ -3060,9 +3408,9 @@
             const totalIt = Object.values(S.unidadeAtual.compartimentos)
                 .reduce((s, arr) => s + arr.length, 0);
             document.getElementById('avulsaResumo').innerHTML = `
-                        <span class="stat">📦 <b>${comps}</b> compartimento${comps !== 1 ? 's' : ''}</span>
-                        <span class="stat">📋 <b>${totalIt}</b> item${totalIt !== 1 ? 's' : ''}</span>
-                      `;
+                            <span class="stat">📦 <b>${comps}</b> compartimento${comps !== 1 ? 's' : ''}</span>
+                            <span class="stat">📋 <b>${totalIt}</b> item${totalIt !== 1 ? 's' : ''}</span>
+                          `;
 
             renderItensAvulsa();
         }
@@ -3094,14 +3442,14 @@
                     const div = document.createElement('div');
                     div.className = 'item-avulsa';
                     div.innerHTML = `
-                            <div class="info">
-                              <b>${it.material}</b>
-                              ${it.patrimonio ? `<small>🏷️ Patrim: ${it.patrimonio}</small>` : ''}
-                              ${it.serie ? `<small>🔢 Série: ${it.serie}</small>` : ''}
-                              ${it.obs ? `<small>📝 ${it.obs}</small>` : ''}
-                            </div>
-                            <span class="qtd-badge">×${it.qtd}</span>
-                          `;
+                                <div class="info">
+                                  <b>${it.material}</b>
+                                  ${it.patrimonio ? `<small>🏷️ Patrim: ${it.patrimonio}</small>` : ''}
+                                  ${it.serie ? `<small>🔢 Série: ${it.serie}</small>` : ''}
+                                  ${it.obs ? `<small>📝 ${it.obs}</small>` : ''}
+                                </div>
+                                <span class="qtd-badge">×${it.qtd}</span>
+                              `;
                     wrap.appendChild(div);
                 });
 
